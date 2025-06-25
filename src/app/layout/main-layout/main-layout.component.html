@@ -1,0 +1,33 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+  #drawer
+  class="sidenav"
+  [mode]="sidenavMode"
+  [opened]="isSidenavOpened"
+  (openedChange)="onSidenavStateChange($event)"
+  (backdropClick)="onBackdropClick()"
+>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/">Start</a>
+      <a mat-list-item routerLink="/admin">Admin</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content (click)="onContentClick()">
+    <mat-toolbar class="custom-toolbar">
+      <button
+  mat-icon-button
+  (click)="toggleSidebar()"
+  [style.display]="!isSidenavOpened ? 'inline-flex' : 'none'"
+  aria-label="Sidebar öffnen"
+>
+  <mat-icon>menu</mat-icon>
+</button>
+      <span class="toolbar-title">Hüpfburgen Verwaltung</span>
+    </mat-toolbar>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
