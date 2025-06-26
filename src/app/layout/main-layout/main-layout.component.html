@@ -1,28 +1,35 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
-  #drawer
-  class="sidenav"
-  [mode]="sidenavMode"
-  [opened]="isSidenavOpened"
-  (openedChange)="onSidenavStateChange($event)"
-  (backdropClick)="onBackdropClick()"
->
+    #drawer
+    class="sidenav"
+    [mode]="sidenavMode"
+    [opened]="isSidenavOpened"
+    (openedChange)="onSidenavStateChange($event)"
+    (backdropClick)="onBackdropClick()"
+  >
     <mat-nav-list>
       <a mat-list-item routerLink="/">Start</a>
       <a mat-list-item routerLink="/admin">Admin</a>
+
+      <!-- Nur im Adminbereich -->
+      <ng-container *ngIf="isInAdminArea()">
+        <a mat-list-item routerLink="/admin/equipment">Equipmentverwaltung</a>
+        <a mat-list-item routerLink="/admin/users">Benutzerverwaltung</a>
+        <a mat-list-item routerLink="/admin/users/new">Neuer Benutzer</a>
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content (click)="onContentClick()">
     <mat-toolbar class="custom-toolbar">
       <button
-  mat-icon-button
-  (click)="toggleSidebar()"
-  [style.display]="!isSidenavOpened ? 'inline-flex' : 'none'"
-  aria-label="Sidebar öffnen"
->
-  <mat-icon>menu</mat-icon>
-</button>
+        mat-icon-button
+        (click)="toggleSidebar()"
+        [style.display]="!isSidenavOpened ? 'inline-flex' : 'none'"
+        aria-label="Sidebar öffnen"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
       <span class="toolbar-title">Hüpfburgen Verwaltung</span>
     </mat-toolbar>
 

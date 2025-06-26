@@ -1,0 +1,17 @@
+<h2>Registrieren</h2>
+
+<mat-form-field appearance="fill">
+  <mat-label>E-Mail</mat-label>
+  <input matInput [(ngModel)]="email" type="email" />
+</mat-form-field>
+
+<mat-form-field appearance="fill">
+  <mat-label>Passwort</mat-label>
+  <input matInput [(ngModel)]="password" type="password" />
+</mat-form-field>
+
+<button mat-raised-button color="primary" (click)="register()" [disabled]="loading">
+  {{ loading ? 'Registriere...' : 'Registrieren' }}
+</button>
+
+<p *ngIf="message">{{ message }}</p>

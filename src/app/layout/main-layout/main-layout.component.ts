@@ -1,16 +1,23 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [CommonModule, MatCardModule, RouterModule, MatSidenavModule, MatToolbarModule, MatListModule, MatIconModule
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    RouterModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatIconModule
   ],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss']
@@ -20,6 +27,8 @@ export class MainLayoutComponent {
 
   isLargeScreen = window.innerWidth > 768;
   isSidenavOpened = this.isLargeScreen;
+
+  constructor(public router: Router) {}
 
   @HostListener('window:resize', [])
   onResize() {
@@ -34,13 +43,13 @@ export class MainLayoutComponent {
   }
 
   toggleSidebar() {
-  console.log('toggleSidebar clicked, current state:', this.isSidenavOpened);
-  this.isSidenavOpened = true;
+    console.log('toggleSidebar clicked, current state:', this.isSidenavOpened);
+    this.isSidenavOpened = true;
 
-  if (this.drawer && this.sidenavMode === 'side') {
-    this.drawer.open(); // ← hilft bei Desktop-Modus (side)
+    if (this.drawer && this.sidenavMode === 'side') {
+      this.drawer.open(); // Desktop explizit öffnen
+    }
   }
-}
 
   onContentClick() {
     if (this.isLargeScreen && this.isSidenavOpened === true) {
@@ -49,14 +58,18 @@ export class MainLayoutComponent {
   }
 
   onSidenavStateChange(opened: boolean) {
-  this.isSidenavOpened = opened;
-}
+    this.isSidenavOpened = opened;
+  }
 
-onBackdropClick() {
-  this.drawer.close(); // ← triggert onSidenavStateChange automatisch
-}
+  onBackdropClick() {
+    this.drawer.close();
+  }
+
+  isInAdminArea(): boolean {
+    return this.router.url.startsWith('/admin');
+  }
 
   ngAfterViewInit() {
-  console.log('drawer ref:', this.drawer);
-}
+    console.log('drawer ref:', this.drawer);
+  }
 }

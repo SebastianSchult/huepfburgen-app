@@ -15,5 +15,10 @@
     {{ loading ? 'Login...' : 'Login' }}
   </button>
 
-  <div class="error" *ngIf="error">{{ error }}</div>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <p>
+    Noch keinen Account?
+    <a routerLink="/register">Jetzt registrieren</a>
+  </p>
 </div>

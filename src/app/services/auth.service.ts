@@ -6,7 +6,12 @@ import {
   onAuthStateChanged,
   User,
 } from '@angular/fire/auth';
-import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  doc,
+  getDoc,
+  setDoc,
+} from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
@@ -39,7 +44,10 @@ export class AuthService {
     try {
       const cred = await signInWithEmailAndPassword(this.auth, email, password);
       await this.checkAdminStatus(cred.user.uid);
-      this.router.navigate(['/']); // evtl. '/admin' bei Bedarf
+
+      // 🔀 Navigation abhängig von Rolle
+      const isAdmin = this.isAdminSubject.getValue();
+      this.router.navigate([isAdmin ? '/admin' : '/']);
     } catch (error) {
       throw error;
     }
@@ -58,5 +66,10 @@ export class AuthService {
     const userSnap = await getDoc(userDocRef);
     const isAdmin = userSnap.exists() && userSnap.data()['role'] === 'admin';
     this.isAdminSubject.next(isAdmin);
+  }
+
+  async createUserProfile(uid: string, email: string, role: string = 'user') {
+    const userDocRef = doc(this.firestore, `users/${uid}`);
+    await setDoc(userDocRef, { email, role }, { merge: true });
   }
 }

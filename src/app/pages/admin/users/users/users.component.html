@@ -1,6 +1,14 @@
 <mat-card>
   <mat-card-title>Benutzerverwaltung</mat-card-title>
-  <mat-table [dataSource]="users">
+
+  <div style="text-align: right; margin: 1rem 0;">
+    <button mat-raised-button color="primary" (click)="navigateToNewUser()">
+      <mat-icon>person_add</mat-icon>
+      Neuer Benutzer
+    </button>
+  </div>
+
+  <mat-table [dataSource]="users" class="mat-elevation-z1">
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef>E-Mail</mat-header-cell>
       <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
@@ -14,9 +22,12 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>Aktionen</mat-header-cell>
       <mat-cell *matCellDef="let user">
-        <!-- später Buttons einfügen -->
-        <button mat-button>Edit</button>
-        <button mat-button color="warn">Löschen</button>
+        <button mat-icon-button color="primary" aria-label="Bearbeiten">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" aria-label="Löschen">
+          <mat-icon>delete</mat-icon>
+        </button>
       </mat-cell>
     </ng-container>
 

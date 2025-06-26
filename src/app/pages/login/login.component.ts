@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -14,7 +15,8 @@ import { AuthService } from '../../services/auth.service';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule // 👉 für RouterLink zur Registrierung
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -33,7 +35,7 @@ export class LoginComponent {
     try {
       await this.authService.login(this.email, this.password);
     } catch (err: any) {
-      this.error = err.message;
+      this.error = err?.message || 'Unbekannter Fehler beim Login.';
     } finally {
       this.loading = false;
     }

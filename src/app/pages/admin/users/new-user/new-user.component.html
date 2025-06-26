@@ -1,0 +1,24 @@
+<h2>Neuen Benutzer anlegen</h2>
+
+<mat-form-field appearance="fill" style="width: 100%; margin-bottom: 1rem;">
+  <mat-label>E-Mail</mat-label>
+  <input matInput [(ngModel)]="email" type="email" required />
+</mat-form-field>
+
+<mat-form-field appearance="fill" style="width: 100%; margin-bottom: 1rem;">
+  <mat-label>Rolle</mat-label>
+  <mat-select [(ngModel)]="role">
+    <mat-option value="user">User</mat-option>
+    <mat-option value="admin">Admin</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div style="margin-bottom: 1rem;">
+  <button mat-raised-button color="primary" (click)="createUserPlaceholder()" [disabled]="loading">
+    {{ loading ? 'Speichern…' : 'Benutzer erstellen' }}
+  </button>
+  <button mat-button routerLink="/admin/users" style="margin-left: 1rem;">Zurück</button>
+</div>
+
+<p *ngIf="message" style="color: green;">{{ message }}</p>
+<p *ngIf="error" style="color: red;">{{ error }}</p>

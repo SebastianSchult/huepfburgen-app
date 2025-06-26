@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { AdminGuard } from './guards/auth.guard'; // 🔑 Wichtig!
+import { AdminGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -34,11 +34,23 @@ export const routes: Routes = [
             (m) => m.UsersComponent
           ),
       },
+      {
+        path: 'admin/users/new',
+        loadComponent: () =>
+          import('./pages/admin/users/new-user/new-user.component').then(
+            (m) => m.NewUserComponent
+          ),
+      },
     ],
   },
   {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/register/register.component').then((m) => m.RegisterComponent),
   },
 ];
