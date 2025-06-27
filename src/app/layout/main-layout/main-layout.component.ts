@@ -6,8 +6,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../../services/auth.service'; 
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../services/auth.service';
+import { User } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-main-layout',
@@ -27,16 +29,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MainLayoutComponent {
   @ViewChild('drawer') drawer!: MatSidenav;
 
+  currentUser: User | null = null;
+  isAdmin$: Observable<boolean>;
+
   isLargeScreen = window.innerWidth > 768;
   isSidenavOpened = this.isLargeScreen;
 
   private authService = inject(AuthService);
   private snackBar = inject(MatSnackBar);
-  isAdmin: boolean = false;
 
   constructor(public router: Router) {
-    this.authService.isAdmin$.subscribe((isAdmin) => {
-      this.isAdmin = isAdmin;
+    this.isAdmin$ = this.authService.isAdmin$;
+    this.authService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
     });
   }
 
@@ -53,16 +58,14 @@ export class MainLayoutComponent {
   }
 
   toggleSidebar() {
-    console.log('toggleSidebar clicked, current state:', this.isSidenavOpened);
     this.isSidenavOpened = true;
-
     if (this.drawer && this.sidenavMode === 'side') {
-      this.drawer.open(); // Desktop explizit öffnen
+      this.drawer.open();
     }
   }
 
   onContentClick() {
-    if (this.isLargeScreen && this.isSidenavOpened === true) {
+    if (this.isLargeScreen && this.isSidenavOpened) {
       this.isSidenavOpened = false;
     }
   }
@@ -79,16 +82,13 @@ export class MainLayoutComponent {
     return this.router.url.startsWith('/admin');
   }
 
-  ngAfterViewInit() {
-    console.log('drawer ref:', this.drawer);
-  }
-
   logout() {
     this.authService.logout().then(() => {
       this.snackBar.open('🚪 Erfolgreich abgemeldet.', 'Schließen', {
         duration: 3000,
         verticalPosition: 'bottom',
       });
+      this.router.navigate(['/']); // Optional: zur Startseite
     });
   }
 }

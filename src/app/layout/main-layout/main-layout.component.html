@@ -9,10 +9,22 @@
   >
     <mat-nav-list>
       <a mat-list-item routerLink="/">Start</a>
-      <a *ngIf="isAdmin" mat-list-item routerLink="/admin">Admin</a>
 
-      <!-- Nur im Adminbereich UND für Admins -->
-      <ng-container *ngIf="isAdmin && isInAdminArea()">
+      <!-- Login nur wenn nicht eingeloggt -->
+      <ng-container *ngIf="!currentUser">
+        <a mat-list-item routerLink="/login">Login</a>
+      </ng-container>
+
+      <!-- Logout nur wenn eingeloggt -->
+      <ng-container *ngIf="currentUser">
+        <a mat-list-item (click)="logout()">Logout</a>
+      </ng-container>
+
+      <!-- Admin-Zugang nur wenn Admin -->
+      <a *ngIf="isAdmin$ | async" mat-list-item routerLink="/admin">Admin</a>
+
+      <!-- Unterpunkte NUR für Admins UND im Adminbereich -->
+      <ng-container *ngIf="(isAdmin$ | async) && isInAdminArea()">
         <a mat-list-item routerLink="/admin/equipment">Equipmentverwaltung</a>
         <a mat-list-item routerLink="/admin/users">Benutzerverwaltung</a>
         <a mat-list-item routerLink="/admin/users/new">Neuer Benutzer</a>
@@ -34,10 +46,12 @@
       <span class="toolbar-title">Hüpfburgen Verwaltung</span>
       <span class="spacer"></span>
 
-      <!-- Logout-Button -->
-      <button mat-icon-button aria-label="Abmelden" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-      </button>
+      <!-- Logout-Icon in Toolbar -->
+      <ng-container *ngIf="currentUser">
+        <button mat-icon-button aria-label="Abmelden" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </ng-container>
     </mat-toolbar>
 
     <div class="content">

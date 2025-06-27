@@ -80,7 +80,7 @@ export class AuthService {
     return signOut(this.auth).then(() => {
       this.currentUserSubject.next(null);
       this.isAdminSubject.next(false);
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     });
   }
 }
