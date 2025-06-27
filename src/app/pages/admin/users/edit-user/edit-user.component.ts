@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import {
   updateDoc
 } from '@angular/fire/firestore';
 import { MatIcon } from '@angular/material/icon';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
@@ -25,12 +26,14 @@ import { MatIcon } from '@angular/material/icon';
     MatButtonModule,
     MatSelectModule,
     MatIcon,
-    RouterModule
+    RouterModule,
+    MatSnackBarModule
   ],
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.scss']
 })
 export class EditUserComponent implements OnInit {
+  private snackBar = inject(MatSnackBar);
   uid = '';
   email = '';
   role = 'user';
@@ -40,7 +43,7 @@ export class EditUserComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private firestore: Firestore
+    private firestore: Firestore,
   ) {}
 
   async ngOnInit() {
@@ -65,7 +68,7 @@ export class EditUserComponent implements OnInit {
     }
   }
 
-  async saveChanges() {
+    async saveChanges() {
     this.loading = true;
     this.message = '';
     try {
@@ -74,9 +77,16 @@ export class EditUserComponent implements OnInit {
         email: this.email,
         role: this.role
       });
-      this.message = '✅ Änderungen gespeichert.';
+
+      this.snackBar.open('✅ Benutzer aktualisiert', 'OK', {
+        duration: 3000
+      });
+
       setTimeout(() => this.router.navigate(['/admin/users']), 1500);
     } catch (err) {
+      this.snackBar.open('❌ Fehler beim Speichern des Benutzers', 'Schließen', {
+        duration: 5000
+      });
       this.message = '❌ Fehler beim Speichern.';
     } finally {
       this.loading = false;

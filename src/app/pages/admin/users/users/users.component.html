@@ -35,6 +35,7 @@
             color="warn"
             aria-label="Löschen"
             (click)="deleteUser(user.uid)"
+            [disabled]="isCurrentUser(user.uid)"
           >
             <mat-icon>delete</mat-icon>
           </button>
