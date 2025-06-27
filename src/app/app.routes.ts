@@ -53,4 +53,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/register/register.component').then((m) => m.RegisterComponent),
   },
+  {
+  path: 'admin/users/edit/:uid',
+  loadComponent: () =>
+    import('./pages/admin/users/edit-user/edit-user.component').then(
+      (m) => m.EditUserComponent
+    ),
+},
 ];

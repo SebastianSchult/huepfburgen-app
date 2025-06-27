@@ -5,9 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Router } from '@angular/router';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, doc, deleteDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { doc, deleteDoc } from '@angular/fire/firestore';
 
 interface User {
   email: string;
@@ -42,18 +41,24 @@ export class UsersComponent {
     this.router.navigate(['/admin/users/new']);
   }
 
-  async deleteUser(uid: string) {
-  if (!uid) return;
-
-  const confirmDelete = confirm('Benutzer wirklich löschen?');
-  if (!confirmDelete) return;
-
-  try {
-    const userDocRef = doc(this.firestore, `users/${uid}`);
-    await deleteDoc(userDocRef);
-  } catch (error) {
-    console.error('Fehler beim Löschen:', error);
-    alert('Fehler beim Löschen des Benutzers.');
+  editUser(uid?: string) {
+    if (uid) {
+      this.router.navigate(['/admin/users/edit', uid]);
+    }
   }
-}
+
+  async deleteUser(uid: string) {
+    if (!uid) return;
+
+    const confirmDelete = confirm('Benutzer wirklich löschen?');
+    if (!confirmDelete) return;
+
+    try {
+      const userDocRef = doc(this.firestore, `users/${uid}`);
+      await deleteDoc(userDocRef);
+    } catch (error) {
+      console.error('Fehler beim Löschen:', error);
+      alert('Fehler beim Löschen des Benutzers.');
+    }
+  }
 }

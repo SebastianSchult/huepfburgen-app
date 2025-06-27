@@ -23,7 +23,11 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Aktionen</mat-header-cell>
         <mat-cell *matCellDef="let user">
-          <button mat-icon-button color="primary" aria-label="Bearbeiten">
+          <button
+            mat-icon-button
+            color="primary"
+            [routerLink]="['/admin/users/edit', user.uid]"
+          >
             <mat-icon>edit</mat-icon>
           </button>
           <button

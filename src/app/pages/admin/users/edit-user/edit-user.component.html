@@ -1,0 +1,29 @@
+<form>
+  <h2>Benutzer bearbeiten</h2>
+
+  <mat-form-field appearance="fill">
+    <mat-label>E-Mail</mat-label>
+    <input matInput [(ngModel)]="email" name="email" type="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Rolle</mat-label>
+    <mat-select [(ngModel)]="role" name="role">
+      <mat-option value="user">User</mat-option>
+      <mat-option value="admin">Admin</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="button-row">
+    <button mat-stroked-button color="accent" routerLink="/admin/users">
+      <mat-icon>arrow_back</mat-icon>
+      Zurück
+    </button>
+
+    <button mat-raised-button color="primary" (click)="saveChanges()" [disabled]="loading">
+      {{ loading ? 'Speichern...' : 'Änderungen speichern' }}
+    </button>
+  </div>
+
+  <p *ngIf="message">{{ message }}</p>
+</form>
