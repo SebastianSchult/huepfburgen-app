@@ -3,6 +3,12 @@ mat-card {
   padding: 1rem;
 }
 
-mat-list-item {
-  border-bottom: 1px solid #ccc;
+mat-card-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+::ng-deep .fc {
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  font-size: 14px;
 }

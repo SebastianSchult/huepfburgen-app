@@ -1,9 +1,6 @@
-<mat-card>
-  <mat-card-title>Equipment-Verwaltung</mat-card-title>
-  <mat-list>
-    <mat-list-item *ngFor="let item of equipmentList">
-      <div mat-line>{{ item.name }}</div>
-      <div mat-line>Status: {{ item.status }}</div>
-    </mat-list-item>
-  </mat-list>
+<mat-card *ngFor="let item of equipmentList">
+  <mat-card-title>{{ item.name }}</mat-card-title>
+  <p>Status: {{ item.status }}</p>
+
+  <full-calendar [options]="item.calendarOptions"></full-calendar>
 </mat-card>
