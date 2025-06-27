@@ -6,7 +6,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../../services/auth.service'; // ggf. Pfad anpassen
+import { AuthService } from '../../services/auth.service'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-main-layout',
@@ -18,10 +19,10 @@ import { AuthService } from '../../services/auth.service'; // ggf. Pfad anpassen
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './main-layout.component.html',
-  styleUrls: ['./main-layout.component.scss']
+  styleUrls: ['./main-layout.component.scss'],
 })
 export class MainLayoutComponent {
   @ViewChild('drawer') drawer!: MatSidenav;
@@ -30,6 +31,7 @@ export class MainLayoutComponent {
   isSidenavOpened = this.isLargeScreen;
 
   private authService = inject(AuthService);
+  private snackBar = inject(MatSnackBar);
   isAdmin: boolean = false;
 
   constructor(public router: Router) {
@@ -82,6 +84,11 @@ export class MainLayoutComponent {
   }
 
   logout() {
-  this.authService.logout();
-}
+    this.authService.logout().then(() => {
+      this.snackBar.open('🚪 Erfolgreich abgemeldet.', 'Schließen', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+      });
+    });
+  }
 }
