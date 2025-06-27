@@ -9,10 +9,10 @@
   >
     <mat-nav-list>
       <a mat-list-item routerLink="/">Start</a>
-      <a mat-list-item routerLink="/admin">Admin</a>
+      <a *ngIf="isAdmin" mat-list-item routerLink="/admin">Admin</a>
 
-      <!-- Nur im Adminbereich -->
-      <ng-container *ngIf="isInAdminArea()">
+      <!-- Nur im Adminbereich UND für Admins -->
+      <ng-container *ngIf="isAdmin && isInAdminArea()">
         <a mat-list-item routerLink="/admin/equipment">Equipmentverwaltung</a>
         <a mat-list-item routerLink="/admin/users">Benutzerverwaltung</a>
         <a mat-list-item routerLink="/admin/users/new">Neuer Benutzer</a>
@@ -30,7 +30,14 @@
       >
         <mat-icon>menu</mat-icon>
       </button>
+
       <span class="toolbar-title">Hüpfburgen Verwaltung</span>
+      <span class="spacer"></span>
+
+      <!-- Logout-Button -->
+      <button mat-icon-button aria-label="Abmelden" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
     </mat-toolbar>
 
     <div class="content">

@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../../services/auth.service'; // ggf. Pfad anpassen
 
 @Component({
   selector: 'app-main-layout',
@@ -28,7 +29,14 @@ export class MainLayoutComponent {
   isLargeScreen = window.innerWidth > 768;
   isSidenavOpened = this.isLargeScreen;
 
-  constructor(public router: Router) {}
+  private authService = inject(AuthService);
+  isAdmin: boolean = false;
+
+  constructor(public router: Router) {
+    this.authService.isAdmin$.subscribe((isAdmin) => {
+      this.isAdmin = isAdmin;
+    });
+  }
 
   @HostListener('window:resize', [])
   onResize() {
@@ -72,4 +80,8 @@ export class MainLayoutComponent {
   ngAfterViewInit() {
     console.log('drawer ref:', this.drawer);
   }
+
+  logout() {
+  this.authService.logout();
+}
 }

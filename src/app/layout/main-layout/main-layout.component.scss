@@ -21,9 +21,9 @@
   height: 128px;
   display: flex;
   align-items: center;
-  justify-content: center; // zentriert den gesamten Inhalt horizontal
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
+  padding: 0 16px;
 }
 
 .toolbar-title {
@@ -39,8 +39,19 @@
   }
 }
 
-/* Optional: Menü-Button links absolut positionieren */
+/* Menü-Button immer links */
 .custom-toolbar button {
   position: absolute;
   left: 8px;
+}
+
+/* Flex-Spacer für Logout-Rechtsausrichtung */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Logout-Button an rechter Seite */
+.custom-toolbar button[aria-label='Abmelden'] {
+  position: static;
+  margin-left: auto;
 }
