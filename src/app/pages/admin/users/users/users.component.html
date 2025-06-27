@@ -1,37 +1,48 @@
 <mat-card>
   <mat-card-title>Benutzerverwaltung</mat-card-title>
 
-  <div style="text-align: right; margin: 1rem 0;">
+  <div style="text-align: right; margin: 1rem 0">
     <button mat-raised-button color="primary" (click)="navigateToNewUser()">
       <mat-icon>person_add</mat-icon>
       Neuer Benutzer
     </button>
   </div>
 
-  <mat-table [dataSource]="users" class="mat-elevation-z1">
-    <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef>E-Mail</mat-header-cell>
-      <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
-    </ng-container>
+  <ng-container *ngIf="users$ | async as users; else loading">
+    <mat-table [dataSource]="users" class="mat-elevation-z1">
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>E-Mail</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="role">
-      <mat-header-cell *matHeaderCellDef>Rolle</mat-header-cell>
-      <mat-cell *matCellDef="let user">{{ user.role }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="role">
+        <mat-header-cell *matHeaderCellDef>Rolle</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.role }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Aktionen</mat-header-cell>
-      <mat-cell *matCellDef="let user">
-        <button mat-icon-button color="primary" aria-label="Bearbeiten">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" aria-label="Löschen">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Aktionen</mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <button mat-icon-button color="primary" aria-label="Bearbeiten">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            aria-label="Löschen"
+            (click)="deleteUser(user.uid)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </ng-container>
+
+  <ng-template #loading>
+    <mat-card-content>Lade Benutzerdaten...</mat-card-content>
+  </ng-template>
 </mat-card>
