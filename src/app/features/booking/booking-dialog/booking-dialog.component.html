@@ -31,6 +31,14 @@
     </mat-error>
   </mat-form-field>
 
+  <mat-form-field appearance="fill">
+  <mat-label>Für wen ist die Buchung?</mat-label>
+  <input matInput formControlName="bookedFor" />
+  <mat-error *ngIf="form.get('bookedFor')?.hasError('required')">
+    Dieses Feld ist erforderlich
+  </mat-error>
+</mat-form-field>
+
   <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
     <mat-label>Status</mat-label>
     <mat-select formControlName="status" required>

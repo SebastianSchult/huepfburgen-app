@@ -4,7 +4,8 @@ export interface Booking {
   createdBy: string;
   startDate: string;
   endDate: string;
-  status?: 'offen' | 'bestätigt' | 'storniert'; // <-- optional
+  status?: 'offen' | 'bestätigt' | 'storniert';
+  bookedFor?: string;
 }
 
 export interface BookingEvent {

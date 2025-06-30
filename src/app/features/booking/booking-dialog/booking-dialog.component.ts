@@ -11,6 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Booking } from '../../../models/booking';
 import { Equipment } from '../../../models/equipment';
 import { BookingService } from '../../../services/booking.service';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-booking-dialog',
@@ -33,11 +34,12 @@ export class BookingDialogComponent implements OnInit {
   allBookings: Booking[] = [];
 
   private bookingService = inject(BookingService);
+  private auth = inject(Auth);
+  private snackBar = inject(MatSnackBar);
+  private dialogRef = inject(MatDialogRef<BookingDialogComponent>);
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<BookingDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: { mode: 'add' | 'edit'; booking?: Booking; equipmentList: Equipment[] }
   ) {
@@ -48,6 +50,7 @@ export class BookingDialogComponent implements OnInit {
       startDate: [data.booking?.startDate ?? '', Validators.required],
       endDate: [data.booking?.endDate ?? '', Validators.required],
       status: [data.booking?.status ?? 'offen', Validators.required],
+      bookedFor: [data.booking?.bookedFor ?? '', Validators.required],
     });
   }
 
@@ -59,7 +62,7 @@ export class BookingDialogComponent implements OnInit {
       });
     }
 
-    // Optional: Dynamisch bei Auswahländerung nachladen
+    // Dynamisch bei Auswahländerung nachladen
     this.form.get('equipmentId')?.valueChanges.subscribe(id => {
       this.bookingService.getAllBookings().subscribe((bookings) => {
         this.allBookings = bookings.filter(b => b.equipmentId === id);
@@ -68,60 +71,64 @@ export class BookingDialogComponent implements OnInit {
   }
 
   save() {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
-  }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-  const bookingData: Booking = {
-    ...this.form.value,
-    createdBy: 'test-user-123', // Ersetze das mit aktueller Nutzer-ID!
-  };
+    // Aktueller eingeloggter Nutzer
+    const userId = this.auth.currentUser?.uid ?? 'unknown-user';
 
-  // Überprüfe Überschneidungen
-  const existingBookings = this.data.equipmentList
-    .find(eq => eq.id === bookingData.equipmentId)?.bookings ?? [];
+    const bookingData: Booking = {
+      ...this.form.value,
+      createdBy: userId,
+    };
 
-  const newStart = new Date(bookingData.startDate);
-  const newEnd = new Date(bookingData.endDate);
+    // Nur Buchungen mit status != 'storniert' prüfen
+    const existingBookings = this.data.equipmentList
+      .find(eq => eq.id === bookingData.equipmentId)?.bookings
+      ?.filter(b => b.status !== 'storniert') ?? [];
 
-  const overlaps = existingBookings.some(b => {
-    const existingStart = new Date(b.start);
-    const existingEnd = new Date(b.end);
-    return newStart <= existingEnd && newEnd >= existingStart;
-  });
+    const newStart = new Date(bookingData.startDate);
+    const newEnd = new Date(bookingData.endDate);
 
-  if (overlaps) {
-    this.snackBar.open('Buchung überschneidet sich mit bestehender!', 'OK', {
-      duration: 4000,
+    const overlaps = existingBookings.some(b => {
+      const existingStart = new Date(b.start);
+      const existingEnd = new Date(b.end);
+      return newStart <= existingEnd && newEnd >= existingStart;
     });
-    return;
-  }
 
-  if (this.data.mode === 'add') {
-    this.bookingService.addBooking(bookingData).subscribe({
-      next: () => {
-        this.snackBar.open('Buchung erstellt', 'OK', { duration: 3000 });
-        this.dialogRef.close(true); // signalisiert Erfolg
-      },
-      error: (err) => {
-        this.snackBar.open('Fehler beim Erstellen der Buchung', 'OK', { duration: 3000 });
-        console.error(err);
-      }
-    });
-  } else if (this.data.mode === 'edit' && this.data.booking?.id) {
-    this.bookingService.updateBooking(this.data.booking.id, bookingData).subscribe({
-      next: () => {
-        this.snackBar.open('Buchung aktualisiert', 'OK', { duration: 3000 });
-        this.dialogRef.close(true);
-      },
-      error: (err) => {
-        this.snackBar.open('Fehler beim Aktualisieren der Buchung', 'OK', { duration: 3000 });
-        console.error(err);
-      }
-    });
+    if (overlaps) {
+      this.snackBar.open('Buchung überschneidet sich mit bestehender!', 'OK', {
+        duration: 4000,
+      });
+      return;
+    }
+
+    if (this.data.mode === 'add') {
+      this.bookingService.addBooking(bookingData).subscribe({
+        next: () => {
+          this.snackBar.open('Buchung erstellt', 'OK', { duration: 3000 });
+          this.dialogRef.close(true); // signalisiert Erfolg
+        },
+        error: (err) => {
+          this.snackBar.open('Fehler beim Erstellen der Buchung', 'OK', { duration: 3000 });
+          console.error(err);
+        }
+      });
+    } else if (this.data.mode === 'edit' && this.data.booking?.id) {
+      this.bookingService.updateBooking(this.data.booking.id, bookingData).subscribe({
+        next: () => {
+          this.snackBar.open('Buchung aktualisiert', 'OK', { duration: 3000 });
+          this.dialogRef.close(true);
+        },
+        error: (err) => {
+          this.snackBar.open('Fehler beim Aktualisieren der Buchung', 'OK', { duration: 3000 });
+          console.error(err);
+        }
+      });
+    }
   }
-}
 
   cancel() {
     this.dialogRef.close(null);

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { AdminGuard } from './guards/auth.guard'; // ggf. Pfad prüfen
+import { AdminBookingsComponent } from './pages/admin/bookings/bookings.component';
 
 export const routes: Routes = [
   {
@@ -51,6 +52,14 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./pages/admin/users/edit-user/edit-user.component').then(
                 (m) => m.EditUserComponent
+              ),
+          },
+          // Neue Route für Admin-Buchungen
+          {
+            path: 'bookings',
+            loadComponent: () =>
+              import('./pages/admin/bookings/bookings.component').then(
+                (m) => m.AdminBookingsComponent
               ),
           },
         ],
