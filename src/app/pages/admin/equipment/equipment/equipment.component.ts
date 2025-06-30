@@ -35,6 +35,7 @@ export class EquipmentComponent {
   private dialog = inject(MatDialog);
 
   equipmentList = signal<EquipmentItem[]>([]);
+  brokenImages = new Set<string>();
 
   private _loadEffect = effect(() => {
     this.equipmentService.getAllEquipmentWithBookings().subscribe({
@@ -64,45 +65,46 @@ export class EquipmentComponent {
   );
 
   openAddDialog() {
-  const dialogRef = this.dialog.open(EquipmentDialogComponent, {
-    data: { mode: 'add' },
-  });
+    const dialogRef = this.dialog.open(EquipmentDialogComponent, {
+      data: { mode: 'add' },
+    });
 
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result) {
-      this.equipmentService.addEquipment(result).then(() => {
-        console.log('Neues Equipment erfolgreich hinzugefügt');
-      });
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.equipmentService.addEquipment(result).then(() => {
+          console.log('Neues Equipment erfolgreich hinzugefügt');
+        });
+      }
+    });
+  }
 
   openEditDialog(equipment: Equipment) {
-  const hasNestedPricing = typeof equipment.pricing === 'object' && equipment.pricing !== null;
+    const hasNestedPricing =
+      typeof equipment.pricing === 'object' && equipment.pricing !== null;
 
-  const fixedEquipment: Equipment = {
-    ...equipment,
-    pricing: hasNestedPricing
-      ? equipment.pricing
-      : {
-          day: (equipment as any)['pricing.day'] ?? 0,
-          weekend: (equipment as any)['pricing.weekend'] ?? 0,
-          withDelivery: (equipment as any)['pricing.withDelivery'] ?? 0,
-        },
-  };
+    const fixedEquipment: Equipment = {
+      ...equipment,
+      pricing: hasNestedPricing
+        ? equipment.pricing
+        : {
+            day: (equipment as any)['pricing.day'] ?? 0,
+            weekend: (equipment as any)['pricing.weekend'] ?? 0,
+            withDelivery: (equipment as any)['pricing.withDelivery'] ?? 0,
+          },
+    };
 
-  const dialogRef = this.dialog.open(EquipmentDialogComponent, {
-    data: { mode: 'edit', equipment: fixedEquipment },
-  });
+    const dialogRef = this.dialog.open(EquipmentDialogComponent, {
+      data: { mode: 'edit', equipment: fixedEquipment },
+    });
 
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result) {
-      this.equipmentService.updateEquipment(equipment.id, result).then(() => {
-        console.log('Equipment aktualisiert');
-      });
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.equipmentService.updateEquipment(equipment.id, result).then(() => {
+          console.log('Equipment aktualisiert');
+        });
+      }
+    });
+  }
 
   deleteEquipment(id: string) {
     if (confirm('Möchtest du dieses Equipment wirklich löschen?')) {
@@ -110,5 +112,19 @@ export class EquipmentComponent {
         console.log('Equipment gelöscht');
       });
     }
+  }
+
+  isValidImage(url: string | null | undefined): boolean {
+    if (!url) return false;
+    const trimmed = url.trim();
+    return trimmed !== '' && trimmed !== 'undefined' && trimmed !== 'null';
+  }
+
+  isImageValid(item: Equipment): boolean {
+    return this.isValidImage(item.imageUrl) && !this.brokenImages.has(item.id);
+  }
+
+  onImageError(item: Equipment) {
+    this.brokenImages.add(item.id);
   }
 }

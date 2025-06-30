@@ -2,7 +2,7 @@ export interface Equipment {
   id: string;
   name: string;
   description: string;
-  imageUrl: string;
+  imageUrl: string | null;
   active: boolean;
   pricing: {
     day: number;

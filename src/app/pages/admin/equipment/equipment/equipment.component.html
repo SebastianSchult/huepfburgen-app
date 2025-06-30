@@ -1,5 +1,5 @@
 <!-- Button zum Hinzufügen -->
-<div style="margin-bottom: 16px; text-align: right;">
+<div class="equipment-toolbar">
   <button mat-raised-button color="primary" (click)="openAddDialog()">
     <mat-icon>add</mat-icon>
     Equipment hinzufügen
@@ -7,15 +7,25 @@
 </div>
 
 <!-- Equipment-Karten -->
-<mat-card *ngFor="let item of equipmentList()" class="equipment-card" style="margin-bottom: 16px;">
+<mat-card *ngFor="let item of equipmentList()" class="equipment-card">
   <mat-card-header>
+
+    <ng-container *ngIf="isImageValid(item)">
+  <img
+    [src]="item.imageUrl"
+    alt="{{ item.name }}"
+    class="equipment-thumbnail"
+    (error)="onImageError(item)"
+  />
+</ng-container>
+
     <mat-card-title>{{ item.name }}</mat-card-title>
     <mat-card-subtitle>
       Status: {{ item.active ? 'verfügbar' : 'nicht verfügbar' }}
     </mat-card-subtitle>
 
     <!-- Bearbeiten / Löschen Buttons -->
-    <div style="margin-left: auto; display: flex; gap: 4px;">
+    <div class="equipment-actions">
       <button
         mat-icon-button
         color="primary"
