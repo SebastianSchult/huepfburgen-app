@@ -1,3 +1,5 @@
+import { BookingEvent } from './booking';
+
 export interface Equipment {
   id: string;
   name: string;
@@ -9,9 +11,5 @@ export interface Equipment {
     weekend: number;
     withDelivery: number;
   };
-  bookings?: {
-    title: string;
-    start: string;
-    end: string;
-  }[];
+  bookings?: BookingEvent[];  // <-- hier den korrekten Typ setzen
 }

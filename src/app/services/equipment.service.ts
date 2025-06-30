@@ -28,7 +28,7 @@ export class EquipmentService {
 
   getAllEquipmentWithBookings(): Observable<Equipment[]> {
   return collectionData(this.equipmentCollection, { idField: 'id' }).pipe(
-    map((data) => data as Equipment[]), // 👈 CAST HIER
+    map((data) => data as Equipment[]),
     switchMap((equipmentList: Equipment[]) => {
       if (!equipmentList.length) return of([]);
 
@@ -45,6 +45,7 @@ export class EquipmentService {
               title: 'Reservierung',
               start: b.startDate,
               end: b.endDate,
+              status: b.status ?? 'offen', // 🟢 status mit übergeben
             })),
           }))
         );

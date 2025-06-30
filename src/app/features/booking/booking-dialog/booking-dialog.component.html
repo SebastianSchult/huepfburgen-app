@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>
+  {{ data.mode === 'add' ? 'Neue Buchung' : 'Buchung bearbeiten' }}
+</h2>
+
+<form [formGroup]="form" style="padding: 16px;" (ngSubmit)="save()">
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+    <mat-label>Equipment auswählen</mat-label>
+    <mat-select formControlName="equipmentId" required>
+      <mat-option *ngFor="let eq of equipmentOptions" [value]="eq.id">
+        {{ eq.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('equipmentId')?.hasError('required')">
+      Bitte ein Equipment auswählen
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+    <mat-label>Startdatum</mat-label>
+    <input matInput type="date" formControlName="startDate" required />
+    <mat-error *ngIf="form.get('startDate')?.hasError('required')">
+      Startdatum erforderlich
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+    <mat-label>Enddatum</mat-label>
+    <input matInput type="date" formControlName="endDate" required />
+    <mat-error *ngIf="form.get('endDate')?.hasError('required')">
+      Enddatum erforderlich
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status" required>
+      <mat-option value="offen">Offen</mat-option>
+      <mat-option value="bestätigt">Bestätigt</mat-option>
+      <mat-option value="storniert">Storniert</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div style="text-align: right; margin-top: 24px;">
+    <button mat-button type="button" (click)="cancel()">Abbrechen</button>
+    <button mat-flat-button color="primary" type="submit">
+      {{ data.mode === 'add' ? 'Speichern' : 'Aktualisieren' }}
+    </button>
+  </div>
+</form>

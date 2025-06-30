@@ -10,14 +10,15 @@
 <mat-card *ngFor="let item of equipmentList()" class="equipment-card">
   <mat-card-header>
 
+    <!-- Bildanzeige nur bei gültigem Bild -->
     <ng-container *ngIf="isImageValid(item)">
-  <img
-    [src]="item.imageUrl"
-    alt="{{ item.name }}"
-    class="equipment-thumbnail"
-    (error)="onImageError(item)"
-  />
-</ng-container>
+      <img
+        [src]="item.imageUrl"
+        alt="{{ item.name }}"
+        class="equipment-thumbnail"
+        (error)="onImageError(item)"
+      />
+    </ng-container>
 
     <mat-card-title>{{ item.name }}</mat-card-title>
     <mat-card-subtitle>
@@ -47,5 +48,13 @@
 
   <mat-card-content>
     <full-calendar [options]="item.calendarOptions"></full-calendar>
+
+    <!-- Buchung hinzufügen -->
+    <div style="margin-top: 8px; text-align: right;">
+      <button mat-stroked-button color="accent" (click)="openBookingDialog(item.id)">
+        <mat-icon>event</mat-icon>
+        Buchung hinzufügen
+      </button>
+    </div>
   </mat-card-content>
 </mat-card>
