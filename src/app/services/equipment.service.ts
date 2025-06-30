@@ -10,72 +10,69 @@ import {
   deleteDoc,
   query,
   where,
-  CollectionReference
+  CollectionReference,
+  DocumentData,
 } from '@angular/fire/firestore';
 import { combineLatest, map, switchMap, of, Observable } from 'rxjs';
+import { Equipment } from '../models/equipment'; // ✅ Pfad anpassen
 
 @Injectable({
   providedIn: 'root',
 })
 export class EquipmentService {
-  private equipmentCollection: CollectionReference;
+  private equipmentCollection: CollectionReference<DocumentData>;
 
   constructor(private firestore: Firestore) {
     this.equipmentCollection = collection(this.firestore, 'equipment');
   }
 
-  // ✅ Bestehende Methode: Equipment + Buchungen
-  getAllEquipmentWithBookings(): Observable<any[]> {
-    return collectionData(this.equipmentCollection, { idField: 'id' }).pipe(
-      switchMap((equipmentList: any[]) => {
-        if (!equipmentList.length) return of([]);
+  getAllEquipmentWithBookings(): Observable<Equipment[]> {
+  return collectionData(this.equipmentCollection, { idField: 'id' }).pipe(
+    map((data) => data as Equipment[]), // 👈 CAST HIER
+    switchMap((equipmentList: Equipment[]) => {
+      if (!equipmentList.length) return of([]);
 
-        const combined = equipmentList.map((equipment) => {
-          const bookingsRef = query(
-            collection(this.firestore, 'bookings'),
-            where('equipmentId', '==', equipment.id)
-          );
+      const combined = equipmentList.map((equipment) => {
+        const bookingsRef = query(
+          collection(this.firestore, 'bookings'),
+          where('equipmentId', '==', equipment.id)
+        );
 
-          return collectionData(bookingsRef).pipe(
-            map((bookings) => ({
-              ...equipment,
-              bookings: bookings.map((b: any) => ({
-                title: 'Reservierung',
-                start: b.startDate,
-                end: b.endDate,
-              })),
-            }))
-          );
-        });
+        return collectionData(bookingsRef).pipe(
+          map((bookings) => ({
+            ...equipment,
+            bookings: bookings.map((b: any) => ({
+              title: 'Reservierung',
+              start: b.startDate,
+              end: b.endDate,
+            })),
+          }))
+        );
+      });
 
-        return combineLatest(combined);
-      })
-    );
+      return combineLatest(combined);
+    })
+  );
+}
+
+  getAllEquipmentOnly(): Observable<Equipment[]> {
+    return collectionData(this.equipmentCollection, { idField: 'id' }) as Observable<Equipment[]>;
   }
 
-  // 🔍 Nur Equipment (ohne Buchungen)
-  getAllEquipmentOnly(): Observable<any[]> {
-    return collectionData(this.equipmentCollection, { idField: 'id' });
-  }
-
-  // 📄 Einzelnes Equipment lesen
-  getEquipmentById(id: string): Observable<any> {
+  getEquipmentById(id: string): Observable<Equipment> {
     const docRef = doc(this.firestore, 'equipment', id);
-    return docData(docRef, { idField: 'id' });
+    return docData(docRef, { idField: 'id' }) as Observable<Equipment>;
   }
 
-  // 🆕 Neues Equipment anlegen
-  addEquipment(data: { name: string; status: string }) {
+  addEquipment(data: Omit<Equipment, 'id'>) {
     return addDoc(this.equipmentCollection, data);
   }
 
-  // ✏️ Vorhandenes Equipment aktualisieren
-  updateEquipment(id: string, data: Partial<{ name: string; status: string }>) {
-    const docRef = doc(this.firestore, 'equipment', id);
-    return updateDoc(docRef, data);
-  }
+  updateEquipment(id: string, data: Partial<Equipment>) {
+  const docRef = doc(this.firestore, 'equipment', id);
+  return updateDoc(docRef, data); // NICHT mit 'pricing.day': xyz usw.
+}
 
-  // ❌ Equipment löschen
   deleteEquipment(id: string) {
     const docRef = doc(this.firestore, 'equipment', id);
     return deleteDoc(docRef);

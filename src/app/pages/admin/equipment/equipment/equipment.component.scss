@@ -8,6 +8,29 @@ mat-card-title {
   margin-bottom: 1rem;
 }
 
+.toolbar {
+  margin-bottom: 1rem;
+}
+
+.equipment-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+button[mat-icon-button] {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+}
+
 ::ng-deep .fc {
   font-family: 'Atkinson Hyperlegible', sans-serif;
   font-size: 14px;
