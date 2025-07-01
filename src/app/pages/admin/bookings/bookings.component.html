@@ -43,6 +43,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
+
 <!-- Mobile-Cards für offene -->
 <div class="mobile-cards">
   <mat-card *ngFor="let b of bookings" class="booking-card mat-elevation-z4">
@@ -63,7 +64,7 @@
 <!-- Desktop-Table für bestätigte -->
 <div class="table-container">
   <table mat-table [dataSource]="bookingsConfirmed" class="mat-elevation-z8">
-    <!-- alles wie oben außer Aktionen -->
+    <!-- gleiche Spalten + Stornieren -->
     <ng-container matColumnDef="equipmentName">
       <th mat-header-cell *matHeaderCellDef>Equipment</th>
       <td mat-cell *matCellDef="let b">{{ b.equipmentName }}</td>
@@ -88,11 +89,20 @@
       <th mat-header-cell *matHeaderCellDef>Status</th>
       <td mat-cell *matCellDef="let b" [ngClass]="b.status">{{ b.status }}</td>
     </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Aktionen</th>
+      <td mat-cell *matCellDef="let b">
+        <button mat-button color="warn" class="action-btn" (click)="rejectBooking(b.id!)">
+          Stornieren
+        </button>
+      </td>
+    </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumnsNoActions"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumnsNoActions;"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
+
 <!-- Mobile-Cards für bestätigte -->
 <div class="mobile-cards">
   <mat-card *ngFor="let b of bookingsConfirmed" class="booking-card mat-elevation-z4">
@@ -102,6 +112,11 @@
     <div class="field"><span class="label">Start:</span><span class="value">{{ b.startDate | date:'short' }}</span></div>
     <div class="field"><span class="label">Ende:</span><span class="value">{{ b.endDate | date:'short' }}</span></div>
     <div class="field"><span class="label">Status:</span><span class="value" [ngClass]="b.status">{{ b.status }}</span></div>
+    <div class="actions">
+      <button mat-button color="warn" class="action-btn" (click)="rejectBooking(b.id!)">
+        Stornieren
+      </button>
+    </div>
   </mat-card>
 </div>
 
@@ -139,6 +154,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumnsNoActions;"></tr>
   </table>
 </div>
+
 <!-- Mobile-Cards für stornierte -->
 <div class="mobile-cards">
   <mat-card *ngFor="let b of bookingsCanceled" class="booking-card mat-elevation-z4">

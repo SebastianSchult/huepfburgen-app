@@ -36,14 +36,11 @@ export class AdminBookingsComponent implements OnInit {
   private userService      = inject(UserService);
   private snackBar         = inject(MatSnackBar);
 
-  // jeweils nur offene
-  bookings: BookingRow[] = [];
-  // bestätigte ohne Aktionen
-  bookingsConfirmed: BookingRow[] = [];
-  // stornierte ohne Aktionen
-  bookingsCanceled: BookingRow[] = [];
+  bookings: BookingRow[] = [];            // offen
+  bookingsConfirmed: BookingRow[] = [];   // bestätigt
+  bookingsCanceled: BookingRow[] = [];    // storniert
 
-  // Spalten für offene (mit Aktionen)
+  // Spalten-Konfiguration
   displayedColumns = [
     'equipmentName',
     'createdByEmail',
@@ -53,7 +50,6 @@ export class AdminBookingsComponent implements OnInit {
     'status',
     'actions'
   ];
-  // Spalten für bestätigte/stornierte (ohne Aktionen)
   displayedColumnsNoActions = [
     'equipmentName',
     'createdByEmail',
@@ -73,11 +69,10 @@ export class AdminBookingsComponent implements OnInit {
       this.equipmentService.getAllEquipmentOnly(),
       this.userService.getAllUsers()
     ]).subscribe({
-      next: ([rawBookings, equipments, users]) => {
-        const userMap = new Map<string,string>(users.map(u => [u.id, u.email]));
-        // ganzes Array transformieren
+      next: ([rawBookings, equips, users]) => {
+        const userMap = new Map(users.map(u => [u.id, u.email]));
         const allRows: BookingRow[] = rawBookings.map(b => {
-          const eq = equipments.find(e => e.id === b.equipmentId);
+          const eq = equips.find(e => e.id === b.equipmentId);
           return {
             ...b,
             equipmentName: eq?.name ?? '–',
@@ -85,7 +80,6 @@ export class AdminBookingsComponent implements OnInit {
             bookedFor: (b as any).bookedFor ?? '–'
           };
         });
-        // nach Status aufteilen
         this.bookings          = allRows.filter(b => b.status === 'offen');
         this.bookingsConfirmed = allRows.filter(b => b.status === 'bestätigt');
         this.bookingsCanceled  = allRows.filter(b => b.status === 'storniert');
@@ -105,7 +99,7 @@ export class AdminBookingsComponent implements OnInit {
   rejectBooking(id: string) {
     this.bookingService.updateBooking(id, { status: 'storniert' })
       .subscribe(() => {
-        this.snackBar.open('Buchung abgelehnt', 'OK', { duration: 3000 });
+        this.snackBar.open('Buchung storniert', 'OK', { duration: 3000 });
         this.loadBookings();
       });
   }
