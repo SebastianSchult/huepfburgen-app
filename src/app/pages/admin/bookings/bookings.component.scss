@@ -14,127 +14,136 @@ h2 {
   color: #333;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Desktop-Tabelle */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 1rem;
 
-  th, td {
+  table {
+    width: 100%;
+    min-width: 800px;
+    border-collapse: collapse;
+  }
+
+  th.mat-header-cell {
+    background-color: #f0f0f0;
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 2;
     padding: 0.75rem 1rem;
     text-align: left;
     vertical-align: middle;
   }
 
-  th {
-    background-color: #f0f0f0;
-    font-weight: 600;
-    border-bottom: 2px solid #ddd;
-  }
-
-  td {
+  td.mat-cell {
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid #eee;
     font-size: 0.95rem;
+    vertical-align: middle;
   }
 
-  tr:hover {
+  tr.mat-row:hover td.mat-cell {
     background-color: #fafafa;
   }
 }
 
-.mat-header-row, .mat-row {
-  display: table-row;
-}
-
-.mat-cell, .mat-header-cell {
-  padding: 0.5rem 1rem;
-  vertical-align: middle;
-}
-
-td button {
+/* Buttons überall */
+td.mat-cell .action-btn,
+.booking-card .action-btn {
   margin-right: 0.5rem;
   font-weight: 600;
-  min-width: 80px;
+  min-width: 100px;
 }
 
+.mat-mdc-button {
+  min-width: 100px;
+  max-height: 32px;
+}
+
+/* Standard-Button-Styles */
 button[color="primary"] {
   background-color: #4caf50;
   color: white;
   transition: background-color 0.2s ease-in-out;
-
-  &:hover {
-    background-color: #388e3c;
-  }
 }
-
+button[color="primary"]:hover {
+  background-color: #388e3c;
+}
 button[color="warn"] {
   background-color: #f44336;
   color: white;
   transition: background-color 0.2s ease-in-out;
-
-  &:hover {
-    background-color: #d32f2f;
-  }
+}
+button[color="warn"]:hover {
+  background-color: #d32f2f;
 }
 
-/* Statusfarben */
-td.mat-column-status {
+/* Statusfarben (Tabelle & Card) */
+.value.offen,
+td.mat-column-status.offen {
+  color: #ff9800;
   font-weight: 700;
-  text-transform: capitalize;
-
-  &.offen {
-    color: #ff9800;
-  }
-
-  &.bestätigt {
-    color: #4caf50;
-  }
-
-  &.storniert {
-    color: #f44336;
-  }
+}
+.value.bestätigt,
+td.mat-column-status.bestätigt {
+  color: #4caf50;
+  font-weight: 700;
+}
+.value.storniert,
+td.mat-column-status.storniert {
+  color: #f44336;
+  font-weight: 700;
 }
 
-/* Responsive für kleinere Bildschirme */
-@media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
+/* Mobile Cards initial verstecken */
+.mobile-cards {
+  display: none;
+}
 
-  thead tr {
+/* ----- Mobile-Layout bis 866px ----- */
+@media (max-width: 866px) {
+  /* Desktop-Tabelle komplett verstecken */
+  .table-container {
     display: none;
   }
 
-  tr {
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 0.5rem;
+  /* Mobile-Cards anzeigen */
+  .mobile-cards {
+    display: block;
+    margin: 0 -1rem; /* schmaler Rand für volle Breite */
   }
 
-  td {
-    padding-left: 50%;
-    position: relative;
-    border: none;
+  .booking-card {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .booking-card .field {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
     border-bottom: 1px solid #eee;
+  }
+  .booking-card .field:last-child {
+    border-bottom: none;
+  }
+  .booking-card .label {
+    font-weight: 600;
+  }
+  .booking-card .value {
     text-align: right;
   }
 
-  td::before {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    white-space: nowrap;
-    font-weight: 600;
-    content: attr(data-label);
-    text-align: left;
+  .booking-card .actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
   }
-
-  td:last-child {
-    border-bottom: 0;
-  }
-
-  td button {
-    min-width: 100%;
-    margin: 0.25rem 0;
+  .booking-card .action-btn {
+    flex: 1;
   }
 }
