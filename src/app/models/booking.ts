@@ -6,6 +6,7 @@ export interface Booking {
   endDate: string;
   status?: 'offen' | 'bestätigt' | 'storniert';
   bookedFor?: string;
+  locationOverride?: string;
 }
 
 export interface BookingEvent {

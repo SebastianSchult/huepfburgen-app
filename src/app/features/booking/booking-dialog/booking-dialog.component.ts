@@ -51,6 +51,7 @@ export class BookingDialogComponent implements OnInit {
       endDate: [data.booking?.endDate ?? '', Validators.required],
       status: [data.booking?.status ?? 'offen', Validators.required],
       bookedFor: [data.booking?.bookedFor ?? '', Validators.required],
+      locationOverride: [data.booking?.locationOverride ?? ''] // NEU
     });
   }
 
@@ -62,7 +63,6 @@ export class BookingDialogComponent implements OnInit {
       });
     }
 
-    // Dynamisch bei Auswahländerung nachladen
     this.form.get('equipmentId')?.valueChanges.subscribe(id => {
       this.bookingService.getAllBookings().subscribe((bookings) => {
         this.allBookings = bookings.filter(b => b.equipmentId === id);
@@ -76,7 +76,6 @@ export class BookingDialogComponent implements OnInit {
       return;
     }
 
-    // Aktueller eingeloggter Nutzer
     const userId = this.auth.currentUser?.uid ?? 'unknown-user';
 
     const bookingData: Booking = {
@@ -84,7 +83,6 @@ export class BookingDialogComponent implements OnInit {
       createdBy: userId,
     };
 
-    // Nur Buchungen mit status != 'storniert' prüfen
     const existingBookings = this.data.equipmentList
       .find(eq => eq.id === bookingData.equipmentId)?.bookings
       ?.filter(b => b.status !== 'storniert') ?? [];
@@ -109,7 +107,7 @@ export class BookingDialogComponent implements OnInit {
       this.bookingService.addBooking(bookingData).subscribe({
         next: () => {
           this.snackBar.open('Buchung erstellt', 'OK', { duration: 3000 });
-          this.dialogRef.close(true); // signalisiert Erfolg
+          this.dialogRef.close(true);
         },
         error: (err) => {
           this.snackBar.open('Fehler beim Erstellen der Buchung', 'OK', { duration: 3000 });

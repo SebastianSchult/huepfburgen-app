@@ -42,22 +42,25 @@ export class AdminBookingsComponent implements OnInit {
 
   // Spalten-Konfiguration
   displayedColumns = [
-    'equipmentName',
-    'createdByEmail',
-    'bookedFor',
-    'startDate',
-    'endDate',
-    'status',
-    'actions'
-  ];
-  displayedColumnsNoActions = [
-    'equipmentName',
-    'createdByEmail',
-    'bookedFor',
-    'startDate',
-    'endDate',
-    'status'
-  ];
+  'equipmentName',
+  'createdByEmail',
+  'bookedFor',
+  'locationOverride',
+  'startDate',
+  'endDate',
+  'status',
+  'actions'
+];
+
+displayedColumnsNoActions = [
+  'equipmentName',
+  'createdByEmail',
+  'bookedFor',
+  'locationOverride',
+  'startDate',
+  'endDate',
+  'status'
+];
 
   ngOnInit() {
     this.loadBookings();

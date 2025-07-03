@@ -3,6 +3,7 @@
 </h2>
 
 <form [formGroup]="form" style="padding: 16px;" (ngSubmit)="save()">
+
   <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
     <mat-label>Equipment auswählen</mat-label>
     <mat-select formControlName="equipmentId" required>
@@ -31,13 +32,18 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
-  <mat-label>Für wen ist die Buchung?</mat-label>
-  <input matInput formControlName="bookedFor" />
-  <mat-error *ngIf="form.get('bookedFor')?.hasError('required')">
-    Dieses Feld ist erforderlich
-  </mat-error>
-</mat-form-field>
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+    <mat-label>Standort (optional)</mat-label>
+    <input matInput formControlName="locationOverride" placeholder="z. B. Standort B" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+    <mat-label>Für wen ist die Buchung?</mat-label>
+    <input matInput formControlName="bookedFor" />
+    <mat-error *ngIf="form.get('bookedFor')?.hasError('required')">
+      Dieses Feld ist erforderlich
+    </mat-error>
+  </mat-form-field>
 
   <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
     <mat-label>Status</mat-label>
@@ -54,4 +60,5 @@
       {{ data.mode === 'add' ? 'Speichern' : 'Aktualisieren' }}
     </button>
   </div>
+
 </form>
