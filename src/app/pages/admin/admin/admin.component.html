@@ -36,4 +36,29 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+  <section class="upcoming-rentals">
+    <div class="upcoming-rentals__header">
+      <p class="card-kicker">Vermietungen</p>
+      <h2>Bevorstehende Vermietungen</h2>
+      <p>Die nächsten bestätigten Einsätze im Blick.</p>
+    </div>
+
+    <div class="upcoming-rentals__list" *ngIf="upcomingBookings.length; else emptyState">
+      <article class="upcoming-rental" *ngFor="let booking of upcomingBookings">
+        <p class="upcoming-rental__title">{{ booking.equipmentName }}</p>
+        <p class="upcoming-rental__meta">
+          {{ booking.startDate | date: 'EEE, dd.MM.yyyy, HH:mm' }}
+          bis
+          {{ booking.endDate | date: 'EEE, dd.MM.yyyy, HH:mm' }}
+        </p>
+        <p class="upcoming-rental__meta" *ngIf="booking.bookedFor">Gebucht für: {{ booking.bookedFor }}</p>
+        <p class="upcoming-rental__meta" *ngIf="booking.locationOverride">Ort: {{ booking.locationOverride }}</p>
+      </article>
+    </div>
+
+    <ng-template #emptyState>
+      <p class="upcoming-rentals__empty">Aktuell sind keine bevorstehenden bestätigten Vermietungen vorhanden.</p>
+    </ng-template>
+  </section>
 </section>

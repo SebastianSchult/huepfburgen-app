@@ -1,7 +1,7 @@
-import { FirestoreConverter } from './firestore-converter';
+import { collectionWithRequiredConverter } from './firestore-converter';
 
-describe('FirestoreConverter', () => {
-  it('should create an instance', () => {
-    expect(new FirestoreConverter()).toBeTruthy();
+describe('collectionWithRequiredConverter', () => {
+  it('should be defined', () => {
+    expect(collectionWithRequiredConverter).toBeDefined();
   });
 });
