@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.new-user-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid var(--notion-hairline);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow-1);
+}
+
+h2 {
+  margin-bottom: 18px;
+  font-size: clamp(1.55rem, 3vw, 2rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 6px;
+}
+
+.success {
+  margin-top: 14px;
+  color: var(--notion-success);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.error {
+  margin-top: 14px;
+  color: var(--notion-error);
+  font-weight: 500;
+  line-height: 1.5;
+}

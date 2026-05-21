@@ -1,149 +1,135 @@
 :host {
   display: block;
-  padding: 1rem;
-  max-width: 1050px;
+  max-width: 1200px;
   margin: 0 auto;
-  font-family: "Atkinson Hyperlegible", sans-serif;
 }
 
 h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  font-size: clamp(1.5rem, 2vw, 2rem);
-  color: #333;
+  margin: 28px 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--notion-hairline);
+  font-size: clamp(1.55rem, 2.8vw, 2rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-/* Desktop-Tabelle */
 .table-container {
   overflow-x: auto;
-  margin-bottom: 1rem;
+  margin-bottom: 18px;
+  border: 1px solid var(--notion-hairline);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--shadow-1);
 
   table {
     width: 100%;
-    min-width: 800px;
-    border-collapse: collapse;
+    min-width: 860px;
   }
 
-  th.mat-header-cell {
-    background-color: #f0f0f0;
-    font-weight: 600;
-    border-bottom: 2px solid #ddd;
+  th.mat-header-cell,
+  th.mat-mdc-header-cell {
     position: sticky;
     top: 0;
     z-index: 2;
-    padding: 0.75rem 1rem;
+    padding: 14px 16px;
     text-align: left;
-    vertical-align: middle;
+    background: var(--notion-surface);
   }
 
-  td.mat-cell {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #eee;
-    font-size: 0.95rem;
+  td.mat-cell,
+  td.mat-mdc-cell {
+    padding: 14px 16px;
     vertical-align: middle;
-  }
-
-  tr.mat-row:hover td.mat-cell {
-    background-color: #fafafa;
   }
 }
 
-/* Buttons überall */
 td.mat-cell .action-btn,
-.booking-card .action-btn {
-  margin-right: 0.5rem;
+.booking-card .action-btn,
+td.mat-mdc-cell .action-btn {
+  margin-right: 6px;
+  margin-bottom: 6px;
   font-weight: 600;
-  min-width: 100px;
 }
 
-.mat-mdc-button {
-  min-width: 100px;
-  max-height: 32px;
-}
-
-/* Standard-Button-Styles */
-button[color="primary"] {
-  background-color: #4caf50;
-  color: white;
-  transition: background-color 0.2s ease-in-out;
-}
-button[color="primary"]:hover {
-  background-color: #388e3c;
-}
-button[color="warn"] {
-  background-color: #f44336;
-  color: white;
-  transition: background-color 0.2s ease-in-out;
-}
-button[color="warn"]:hover {
-  background-color: #d32f2f;
-}
-
-/* Statusfarben (Tabelle & Card) */
 .value.offen,
-td.mat-column-status.offen {
-  color: #ff9800;
-  font-weight: 700;
-}
-.value.bestätigt,
-td.mat-column-status.bestätigt {
-  color: #4caf50;
-  font-weight: 700;
-}
-.value.storniert,
-td.mat-column-status.storniert {
-  color: #f44336;
+td.mat-column-status.offen,
+td.mat-mdc-column-status.offen {
+  color: var(--notion-warning);
   font-weight: 700;
 }
 
-/* Mobile Cards initial verstecken */
+.value.bestätigt,
+td.mat-column-status.bestätigt,
+td.mat-mdc-column-status.bestätigt {
+  color: var(--notion-success);
+  font-weight: 700;
+}
+
+.value.storniert,
+td.mat-column-status.storniert,
+td.mat-mdc-column-status.storniert {
+  color: var(--notion-error);
+  font-weight: 700;
+}
+
 .mobile-cards {
   display: none;
 }
 
-/* ----- Mobile-Layout bis 866px ----- */
-@media (max-width: 866px) {
-  /* Desktop-Tabelle komplett verstecken */
+@media (max-width: 900px) {
   .table-container {
     display: none;
   }
 
-  /* Mobile-Cards anzeigen */
   .mobile-cards {
     display: block;
-    margin: 0 -1rem; /* schmaler Rand für volle Breite */
   }
 
   .booking-card {
-    margin-bottom: 1rem;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid var(--notion-hairline);
+    box-shadow: var(--shadow-1);
     background: #fff;
+  }
+
+  .booking-card:nth-child(3n + 1) {
+    border-left: 4px solid #d8ac95;
+  }
+
+  .booking-card:nth-child(3n + 2) {
+    border-left: 4px solid #c6aedf;
+  }
+
+  .booking-card:nth-child(3n) {
+    border-left: 4px solid #9fc8b0;
   }
 
   .booking-card .field {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--notion-hairline-soft);
   }
+
   .booking-card .field:last-child {
     border-bottom: none;
   }
+
   .booking-card .label {
     font-weight: 600;
   }
+
   .booking-card .value {
     text-align: right;
   }
 
   .booking-card .actions {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-  }
-  .booking-card .action-btn {
-    flex: 1;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
   }
 }

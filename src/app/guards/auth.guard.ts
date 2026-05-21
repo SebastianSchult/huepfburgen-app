@@ -10,6 +10,7 @@ export class AdminGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   async canActivate(): Promise<boolean> {
+    await this.auth.waitForAuthReady();
     const isAdmin = await firstValueFrom(this.auth.isAdmin$);
 
     if (isAdmin) {
@@ -18,5 +19,23 @@ export class AdminGuard implements CanActivate {
       this.router.navigate(['/login']);
       return false;
     }
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthGuard implements CanActivate {
+  constructor(private auth: AuthService, private router: Router) {}
+
+  async canActivate(): Promise<boolean> {
+    const isAuthenticated = await this.auth.isAuthenticated();
+
+    if (isAuthenticated) {
+      return true;
+    }
+
+    this.router.navigate(['/login']);
+    return false;
   }
 }

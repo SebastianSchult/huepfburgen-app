@@ -27,6 +27,7 @@ import { Auth } from '@angular/fire/auth';
     MatSnackBarModule,
   ],
   templateUrl: './booking-dialog.component.html',
+  styleUrls: ['./booking-dialog.component.scss'],
 })
 export class BookingDialogComponent implements OnInit {
   form: FormGroup;
@@ -41,16 +42,22 @@ export class BookingDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA)
-    public data: { mode: 'add' | 'edit'; booking?: Booking; equipmentList: Equipment[] }
+    public data: {
+      mode: 'add' | 'edit';
+      booking?: Booking;
+      equipmentList: Equipment[];
+      equipmentId?: string;
+      isUserFlow?: boolean;
+    }
   ) {
     this.equipmentOptions = data.equipmentList;
 
     this.form = this.fb.group({
-      equipmentId: [data.booking?.equipmentId ?? '', Validators.required],
+      equipmentId: [data.booking?.equipmentId ?? data.equipmentId ?? '', Validators.required],
       startDate: [data.booking?.startDate ?? '', Validators.required],
       endDate: [data.booking?.endDate ?? '', Validators.required],
       status: [data.booking?.status ?? 'offen', Validators.required],
-      bookedFor: [data.booking?.bookedFor ?? '', Validators.required],
+      bookedFor: [data.booking?.bookedFor ?? '', data.isUserFlow ? [] : [Validators.required]],
       locationOverride: [data.booking?.locationOverride ?? ''] // NEU
     });
   }
@@ -76,11 +83,16 @@ export class BookingDialogComponent implements OnInit {
       return;
     }
 
-    const userId = this.auth.currentUser?.uid ?? 'unknown-user';
+    const userId = this.auth.currentUser?.uid;
+    if (!userId) {
+      this.snackBar.open('Bitte zuerst einloggen.', 'OK', { duration: 3000 });
+      return;
+    }
 
     const bookingData: Booking = {
       ...this.form.value,
       createdBy: userId,
+      status: this.data.isUserFlow ? 'offen' : this.form.value.status,
     };
 
     const existingBookings = this.data.equipmentList

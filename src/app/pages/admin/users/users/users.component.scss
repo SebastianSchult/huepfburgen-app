@@ -1,8 +1,35 @@
+:host {
+  display: block;
+}
+
 mat-card {
-  margin: 2rem;
-  padding: 1rem;
+  padding: 24px 24px 18px;
+  margin: 0;
+  border-radius: 16px;
+  border: 1px solid var(--notion-hairline);
+  box-shadow: var(--shadow-1);
+}
+
+mat-card-title {
+  margin-bottom: 10px;
+  font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.users-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 0 18px;
 }
 
 mat-table {
   width: 100%;
+  border: 1px solid var(--notion-hairline);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+mat-cell button {
+  margin-right: 6px;
 }

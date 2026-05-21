@@ -1,0 +1,36 @@
+:host {
+  display: block;
+}
+
+.register-container {
+  max-width: 460px;
+  margin: 40px auto;
+  padding: 32px;
+  border: 1px solid var(--notion-hairline);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow-2);
+}
+
+h2 {
+  font-size: 36px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+button[mat-raised-button] {
+  width: 100%;
+  margin-top: 6px;
+}
+
+p {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--notion-success);
+  font-weight: 500;
+}

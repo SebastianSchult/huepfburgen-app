@@ -7,29 +7,89 @@
     (openedChange)="onSidenavStateChange($event)"
     (backdropClick)="onBackdropClick()"
   >
-    <mat-nav-list>
-      <a mat-list-item routerLink="/">Start</a>
+    <div class="sidenav-shell">
+      <div class="sidenav-brand">
+        <div class="brand-mark">H</div>
+        <div class="brand-copy">
+          <strong>Hüpfburgen</strong>
+          <span>Workspace</span>
+        </div>
+      </div>
 
-      <!-- Login nur wenn nicht eingeloggt -->
-      <ng-container *ngIf="!currentUser">
-        <a mat-list-item routerLink="/login">Login</a>
-      </ng-container>
+      <mat-nav-list class="sidenav-nav">
+        <p class="nav-section-label">Allgemein</p>
 
-      <!-- Logout nur wenn eingeloggt -->
-      <ng-container *ngIf="currentUser">
-        <a mat-list-item (click)="logout()">Logout</a>
-      </ng-container>
+        <a
+          mat-list-item
+          routerLink="/"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item"
+        >
+          <span class="nav-item-inner">
+            <mat-icon>home</mat-icon>
+            <span>Start</span>
+          </span>
+        </a>
 
-      <!-- Admin-Zugang nur wenn Admin -->
-      <a *ngIf="isAdmin$ | async" mat-list-item routerLink="/admin">Admin</a>
+        <ng-container *ngIf="!currentUser">
+          <a mat-list-item routerLink="/login" routerLinkActive="is-active" class="nav-item">
+            <span class="nav-item-inner">
+              <mat-icon>login</mat-icon>
+              <span>Login</span>
+            </span>
+          </a>
+        </ng-container>
 
-      <!-- Unterpunkte NUR für Admins UND im Adminbereich -->
-      <ng-container *ngIf="(isAdmin$ | async) && isInAdminArea()">
-        <a mat-list-item routerLink="/admin/equipment">Equipmentverwaltung</a>
-        <a mat-list-item routerLink="/admin/users">Benutzerverwaltung</a>
-        <a mat-list-item routerLink="/admin/users/new">Neuer Benutzer</a>
-      </ng-container>
-    </mat-nav-list>
+        <ng-container *ngIf="currentUser">
+          <a mat-list-item routerLink="/bookings" routerLinkActive="is-active" class="nav-item">
+            <span class="nav-item-inner">
+              <mat-icon>event_available</mat-icon>
+              <span>Buchung anfragen</span>
+            </span>
+          </a>
+
+          <a mat-list-item (click)="logout()" class="nav-item nav-item-logout">
+            <span class="nav-item-inner">
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </span>
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="isAdmin$ | async">
+          <p class="nav-section-label nav-section-spacer">Administration</p>
+
+          <a mat-list-item routerLink="/admin" routerLinkActive="is-active" class="nav-item">
+            <span class="nav-item-inner">
+              <mat-icon>dashboard</mat-icon>
+              <span>Admin Dashboard</span>
+            </span>
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="(isAdmin$ | async) && isInAdminArea()">
+          <a mat-list-item routerLink="/admin/equipment" routerLinkActive="is-active" class="nav-item nav-sub-item">
+            <span class="nav-item-inner">
+              <mat-icon>inventory_2</mat-icon>
+              <span>Equipmentverwaltung</span>
+            </span>
+          </a>
+          <a mat-list-item routerLink="/admin/users" routerLinkActive="is-active" class="nav-item nav-sub-item">
+            <span class="nav-item-inner">
+              <mat-icon>group</mat-icon>
+              <span>Benutzerverwaltung</span>
+            </span>
+          </a>
+          <a mat-list-item routerLink="/admin/users/new" routerLinkActive="is-active" class="nav-item nav-sub-item">
+            <span class="nav-item-inner">
+              <mat-icon>person_add</mat-icon>
+              <span>Neuer Benutzer</span>
+            </span>
+          </a>
+        </ng-container>
+      </mat-nav-list>
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content (click)="onContentClick()">

@@ -36,6 +36,28 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Deploying to `/huepfburgen-app/`
+
+This app is hosted under the subpath `/huepfburgen-app/` and **must** be built with:
+
+```html
+<base href="/huepfburgen-app/">
+```
+
+Use this deploy-safe build command:
+
+```bash
+npm run build:deploy
+```
+
+Then verify the generated `index.html` before upload:
+
+```bash
+npm run verify:base-href
+```
+
+If `base href` is wrong, the browser will request JS/font files from the wrong path and show MIME/OTS errors.
+
 ## Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:

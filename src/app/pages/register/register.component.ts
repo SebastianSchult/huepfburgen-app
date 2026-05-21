@@ -56,8 +56,9 @@ export class RegisterComponent {
         return;
       }
 
-      const data = querySnapshot.docs[0].data();
-      const role = data['role'] || 'user';
+      // Selbstregistrierung erstellt immer normale User.
+      // Admin-Rollen werden anschließend durch einen vorhandenen Admin vergeben.
+      const role = 'user';
 
       // ✅ Firebase Auth Benutzerkonto anlegen
       const cred = await createUserWithEmailAndPassword(this.auth, this.email, this.password);

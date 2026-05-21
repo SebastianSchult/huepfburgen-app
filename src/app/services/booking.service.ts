@@ -2,16 +2,14 @@ import { Booking } from './../models/booking';
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
-  collection,
   collectionData,
   doc,
-  setDoc,
   updateDoc,
   deleteDoc,
   docData,
   addDoc
 } from '@angular/fire/firestore';
-import { collectionWithRequiredConverter } from './utils/firestore-converter.ts.js';
+import { collectionWithRequiredConverter } from './utils/firestore-converter';
 import { from } from 'rxjs';
 
 @Injectable({

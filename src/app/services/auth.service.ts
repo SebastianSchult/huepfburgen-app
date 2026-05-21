@@ -37,6 +37,11 @@ export class AuthService {
 
   private isAdminSubject = new BehaviorSubject<boolean>(false);
   public isAdmin$ = this.isAdminSubject.asObservable();
+  private authReady = false;
+  private authReadyResolver: (() => void) | null = null;
+  private authReadyPromise: Promise<void> = new Promise((resolve) => {
+    this.authReadyResolver = resolve;
+  });
 
   constructor() {
     onAuthStateChanged(this.auth, (user) => {
@@ -47,8 +52,29 @@ export class AuthService {
         } else {
           this.zone.run(() => this.isAdminSubject.next(false));
         }
+        this.markAuthReady();
       });
     });
+  }
+
+  private markAuthReady() {
+    if (!this.authReady) {
+      this.authReady = true;
+      this.authReadyResolver?.();
+      this.authReadyResolver = null;
+    }
+  }
+
+  async waitForAuthReady(): Promise<void> {
+    if (this.authReady) {
+      return;
+    }
+    await this.authReadyPromise;
+  }
+
+  async isAuthenticated(): Promise<boolean> {
+    await this.waitForAuthReady();
+    return this.currentUserSubject.getValue() !== null;
   }
 
   async login(email: string, password: string) {

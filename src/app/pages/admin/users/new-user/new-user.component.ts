@@ -21,6 +21,7 @@ import { RouterModule, Router } from '@angular/router';
     MatSelectModule,
   ],
   templateUrl: './new-user.component.html',
+  styleUrls: ['./new-user.component.scss'],
 })
 export class NewUserComponent {
   email = '';

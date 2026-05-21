@@ -2,9 +2,8 @@
   {{ data.mode === 'add' ? 'Neue Buchung' : 'Buchung bearbeiten' }}
 </h2>
 
-<form [formGroup]="form" style="padding: 16px;" (ngSubmit)="save()">
-
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+<form [formGroup]="form" class="booking-dialog-form" (ngSubmit)="save()">
+  <mat-form-field appearance="fill" *ngIf="!data.isUserFlow">
     <mat-label>Equipment auswählen</mat-label>
     <mat-select formControlName="equipmentId" required>
       <mat-option *ngFor="let eq of equipmentOptions" [value]="eq.id">
@@ -16,7 +15,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+  <mat-form-field appearance="fill">
     <mat-label>Startdatum</mat-label>
     <input matInput type="date" formControlName="startDate" required />
     <mat-error *ngIf="form.get('startDate')?.hasError('required')">
@@ -24,7 +23,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+  <mat-form-field appearance="fill">
     <mat-label>Enddatum</mat-label>
     <input matInput type="date" formControlName="endDate" required />
     <mat-error *ngIf="form.get('endDate')?.hasError('required')">
@@ -32,12 +31,12 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+  <mat-form-field appearance="fill" *ngIf="!data.isUserFlow">
     <mat-label>Standort (optional)</mat-label>
-    <input matInput formControlName="locationOverride" placeholder="z. B. Standort B" />
+    <input matInput formControlName="locationOverride" placeholder="z. B. Standort B" />
   </mat-form-field>
 
-  <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+  <mat-form-field appearance="fill" *ngIf="!data.isUserFlow">
     <mat-label>Für wen ist die Buchung?</mat-label>
     <input matInput formControlName="bookedFor" />
     <mat-error *ngIf="form.get('bookedFor')?.hasError('required')">
@@ -45,7 +44,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+  <mat-form-field appearance="fill" *ngIf="!data.isUserFlow">
     <mat-label>Status</mat-label>
     <mat-select formControlName="status" required>
       <mat-option value="offen">Offen</mat-option>
@@ -54,11 +53,10 @@
     </mat-select>
   </mat-form-field>
 
-  <div style="text-align: right; margin-top: 24px;">
+  <div class="button-row">
     <button mat-button type="button" (click)="cancel()">Abbrechen</button>
     <button mat-flat-button color="primary" type="submit">
       {{ data.mode === 'add' ? 'Speichern' : 'Aktualisieren' }}
     </button>
   </div>
-
 </form>

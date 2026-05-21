@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { AdminGuard } from './guards/auth.guard'; // ggf. Pfad prüfen
-import { AdminBookingsComponent } from './pages/admin/bookings/bookings.component';
+import { AdminGuard, AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -12,6 +11,14 @@ export const routes: Routes = [
         path: '',
         loadComponent: () =>
           import('./pages/home/home.component').then((m) => m.HomeComponent),
+      },
+      {
+        path: 'bookings',
+        canActivate: [AuthGuard],
+        loadComponent: () =>
+          import('./pages/user/bookings/bookings.component').then(
+            (m) => m.UserBookingsComponent
+          ),
       },
 
       // 🔐 Geschützter Admin-Bereich

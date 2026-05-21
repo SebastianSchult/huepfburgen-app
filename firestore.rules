@@ -1,0 +1,93 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function userDocPath() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && exists(userDocPath())
+        && get(userDocPath()).data.role == 'admin';
+    }
+
+    function isOwnUserDoc(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isUserRole(role) {
+      return role == 'user';
+    }
+
+    function isValidBookingShape() {
+      return request.resource.data.keys().hasOnly([
+          'equipmentId',
+          'createdBy',
+          'startDate',
+          'endDate',
+          'status',
+          'bookedFor',
+          'locationOverride'
+        ])
+        && request.resource.data.keys().hasAll([
+          'equipmentId',
+          'createdBy',
+          'startDate',
+          'endDate',
+          'status'
+        ])
+        && request.resource.data.equipmentId is string
+        && request.resource.data.createdBy is string
+        && request.resource.data.startDate is string
+        && request.resource.data.endDate is string
+        && request.resource.data.status in ['offen', 'bestätigt', 'storniert']
+        && (!('bookedFor' in request.resource.data) || request.resource.data.bookedFor is string)
+        && (!('locationOverride' in request.resource.data) || request.resource.data.locationOverride is string);
+    }
+
+    match /users/{userId} {
+      // Für den bestehenden Registrierungsflow bleibt die Lesbarkeit offen.
+      allow read: if true;
+
+      // User dürfen nur ihr eigenes Profil als Rolle "user" anlegen/aktualisieren.
+      allow create, update: if isAdmin() || (
+        isOwnUserDoc(userId)
+        && request.resource.data.keys().hasOnly(['uid', 'email', 'role'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email is string
+        && request.resource.data.role is string
+        && isUserRole(request.resource.data.role)
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    match /equipment/{equipmentId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /bookings/{bookingId} {
+      allow read: if isSignedIn();
+
+      // Normale User dürfen nur eigene offene Buchungsanfragen erstellen.
+      allow create: if isAdmin() || (
+        isSignedIn()
+        && isValidBookingShape()
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.status == 'offen'
+      );
+
+      allow update, delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

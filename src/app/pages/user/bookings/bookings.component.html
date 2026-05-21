@@ -1,0 +1,33 @@
+<section class="bookings-header">
+  <h1>Vermietungszeiträume buchen</h1>
+  <p>Wähle ein Gerät und sende eine Buchungsanfrage für deinen Zeitraum.</p>
+</section>
+
+<mat-card *ngFor="let item of availableEquipment()" class="equipment-card">
+  <mat-card-header>
+    <ng-container *ngIf="isImageValid(item)">
+      <img
+        [src]="item.imageUrl"
+        alt="{{ item.name }}"
+        class="equipment-thumbnail"
+        (error)="onImageError(item)"
+      />
+    </ng-container>
+
+    <mat-card-title>{{ item.name }}</mat-card-title>
+    <mat-card-subtitle>
+      Status: {{ item.active ? 'verfügbar' : 'nicht verfügbar' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <full-calendar [options]="item.calendarOptions"></full-calendar>
+
+    <div class="booking-toolbar">
+      <button mat-stroked-button color="primary" (click)="openBookingDialog(item)">
+        <mat-icon>event</mat-icon>
+        Zeitraum buchen
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
