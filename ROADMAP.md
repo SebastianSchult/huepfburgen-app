@@ -42,7 +42,7 @@ Each item is handled independently. After every completed item:
 ### 4. Firestore and Security Rules
 
 - [x] 4.1 Review Firestore rules against current UI flows.
-- [ ] 4.2 Plan and document an availability-vs-booking-data concept.
+- [x] 4.2 Plan and document an availability-vs-booking-data concept.
 - [ ] 4.3 Remove or fix the unused permissive admin guard.
 
 ### 5. Admin Booking UX
@@ -60,6 +60,7 @@ Each item is handled independently. After every completed item:
 - [x] 2026-06-24: Admin booking confirmation now checks conflicts against confirmed bookings before updating status.
 - [x] 2026-06-24: Admin booking status sections now show clear empty states when no rows exist.
 - [x] 2026-06-24: Firestore rules reviewed against current UI flows; MVP risks documented in `docs/firestore-rules-review.md`.
+- [x] 2026-06-24: Availability-vs-booking-data concept documented in `docs/availability-data-concept.md`.
 - [x] Admin upcoming rentals section exists.
 - [x] Deploy-safe build script exists in `package.json`.
 - [x] README documents the required `/huepfburgen-app/` base href.

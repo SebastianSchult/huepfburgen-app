@@ -36,6 +36,10 @@ Primary Firestore collections:
 - `equipment`
 - `bookings`
 
+Planned read-model split:
+
+- `equipment_availability` for sanitized calendar availability data
+
 Booking status values:
 
 - `offen`
@@ -58,6 +62,12 @@ Current intent:
 - Users can create their own open booking requests.
 - Admins can create, update, and delete equipment and bookings.
 - Admins can manage user documents.
+
+Future direction:
+
+- normal users should read sanitized availability data instead of full booking records,
+- admins should keep full booking management access,
+- booking owners may later read their own booking details.
 
 ## Deployment
 
