@@ -1,6 +1,7 @@
 <h2>Offene Buchungen</h2>
+<p *ngIf="!bookings.length" class="empty-state">Keine offenen Buchungen vorhanden.</p>
 <!-- Desktop-Table für offene -->
-<div class="table-container">
+<div class="table-container" *ngIf="bookings.length">
   <table mat-table [dataSource]="bookings" class="mat-elevation-z8">
 
     <ng-container matColumnDef="equipmentName">
@@ -54,7 +55,7 @@
 </div>
 
 <!-- Mobile-Cards für offene -->
-<div class="mobile-cards">
+<div class="mobile-cards" *ngIf="bookings.length">
   <mat-card *ngFor="let b of bookings" class="booking-card mat-elevation-z4">
     <div class="field"><span class="label">Equipment:</span><span class="value">{{ b.equipmentName }}</span></div>
     <div class="field"><span class="label">Erstellt von:</span><span class="value">{{ b.createdByEmail }}</span></div>
@@ -73,8 +74,9 @@
 </div>
 
 <h2>Bestätigte Buchungen</h2>
+<p *ngIf="!bookingsConfirmed.length" class="empty-state">Keine bestätigten Buchungen vorhanden.</p>
 <!-- Desktop-Table für bestätigte -->
-<div class="table-container">
+<div class="table-container" *ngIf="bookingsConfirmed.length">
   <table mat-table [dataSource]="bookingsConfirmed" class="mat-elevation-z8">
 
     <ng-container matColumnDef="equipmentName">
@@ -127,7 +129,7 @@
 </div>
 
 <!-- Mobile-Cards für bestätigte -->
-<div class="mobile-cards">
+<div class="mobile-cards" *ngIf="bookingsConfirmed.length">
   <mat-card *ngFor="let b of bookingsConfirmed" class="booking-card mat-elevation-z4">
     <div class="field"><span class="label">Equipment:</span><span class="value">{{ b.equipmentName }}</span></div>
     <div class="field"><span class="label">Erstellt von:</span><span class="value">{{ b.createdByEmail }}</span></div>
@@ -145,8 +147,9 @@
 </div>
 
 <h2>Stornierte Buchungen</h2>
+<p *ngIf="!bookingsCanceled.length" class="empty-state">Keine stornierten Buchungen vorhanden.</p>
 <!-- Desktop-Table für stornierte -->
-<div class="table-container">
+<div class="table-container" *ngIf="bookingsCanceled.length">
   <table mat-table [dataSource]="bookingsCanceled" class="mat-elevation-z8">
 
     <ng-container matColumnDef="equipmentName">
@@ -192,7 +195,7 @@
 </div>
 
 <!-- Mobile-Cards für stornierte -->
-<div class="mobile-cards">
+<div class="mobile-cards" *ngIf="bookingsCanceled.length">
   <mat-card *ngFor="let b of bookingsCanceled" class="booking-card mat-elevation-z4">
     <div class="field"><span class="label">Equipment:</span><span class="value">{{ b.equipmentName }}</span></div>
     <div class="field"><span class="label">Erstellt von:</span><span class="value">{{ b.createdByEmail }}</span></div>

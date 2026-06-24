@@ -76,6 +76,15 @@ td.mat-mdc-column-status.storniert {
   display: none;
 }
 
+.empty-state {
+  margin: 0 0 18px;
+  padding: 16px;
+  border: 1px dashed var(--notion-hairline);
+  border-radius: 8px;
+  color: var(--notion-muted);
+  background: var(--notion-surface);
+}
+
 @media (max-width: 900px) {
   .table-container {
     display: none;

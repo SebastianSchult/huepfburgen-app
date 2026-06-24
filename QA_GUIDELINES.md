@@ -69,6 +69,13 @@ Admin booking confirmation checks should cover:
 - same-equipment conflicts against already confirmed bookings,
 - cancelled bookings do not block confirmation.
 
+Admin booking empty states should be checked for:
+
+- no open bookings,
+- no confirmed bookings,
+- no cancelled bookings,
+- desktop and mobile layouts.
+
 ## Known Build Warning
 
 `npm run build` and `npm run build:deploy` currently pass but emit an Angular budget warning:
