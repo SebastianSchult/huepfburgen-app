@@ -50,3 +50,7 @@ For any auth, rules, or deployment change, check:
 See `docs/firestore-rules-review.md` for the 2026-06-24 review of the current Firestore rules and the accepted MVP risks.
 
 See `docs/availability-data-concept.md` for the planned split between sanitized availability data and full booking records.
+
+## Guard Hygiene
+
+The unused permissive `adminGuard` function was removed on 2026-06-24. Admin routes use the `AdminGuard` class from `src/app/guards/auth.guard.ts`.
