@@ -45,3 +45,6 @@ For any auth, rules, or deployment change, check:
 - Confirm whether signed-in users should be allowed to read all bookings or only their own bookings.
 - Confirm whether users should be able to read all user documents during the current registration flow.
 
+## Latest Review
+
+See `docs/firestore-rules-review.md` for the 2026-06-24 review of the current Firestore rules and the accepted MVP risks.
