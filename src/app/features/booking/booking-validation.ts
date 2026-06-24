@@ -1,4 +1,4 @@
-import { BookingEvent } from '../../models/booking';
+import { Booking, BookingEvent } from '../../models/booking';
 
 export type BookingDateRangeError =
   | 'invalid-date'
@@ -68,3 +68,24 @@ export function hasBookingDateOverlap(
   });
 }
 
+export function hasConfirmedBookingConflict(
+  booking: Booking,
+  bookings: Booking[]
+): boolean {
+  if (!booking.equipmentId || !booking.startDate || !booking.endDate) {
+    return false;
+  }
+
+  const existingBookings = bookings
+    .filter((existingBooking) => existingBooking.id !== booking.id)
+    .filter((existingBooking) => existingBooking.equipmentId === booking.equipmentId)
+    .filter((existingBooking) => existingBooking.status === 'bestätigt')
+    .map((existingBooking) => ({
+      title: 'Confirmed booking',
+      start: existingBooking.startDate,
+      end: existingBooking.endDate,
+      status: existingBooking.status ?? 'bestätigt',
+    }));
+
+  return hasBookingDateOverlap(booking.startDate, booking.endDate, existingBookings);
+}

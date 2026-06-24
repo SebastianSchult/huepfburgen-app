@@ -10,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { hasConfirmedBookingConflict } from '../../../features/booking/booking-validation';
 
 interface BookingRow extends Booking {
   equipmentName: string;
@@ -92,6 +93,20 @@ displayedColumnsNoActions = [
   }
 
   approveBooking(id: string) {
+    const booking = this.bookings.find((item) => item.id === id);
+
+    if (!booking) {
+      this.snackBar.open('Buchung nicht gefunden', 'OK', { duration: 3000 });
+      return;
+    }
+
+    if (hasConfirmedBookingConflict(booking, this.bookingsConfirmed)) {
+      this.snackBar.open('Buchung kollidiert mit einer bereits bestätigten Buchung.', 'OK', {
+        duration: 5000
+      });
+      return;
+    }
+
     this.bookingService.updateBooking(id, { status: 'bestätigt' })
       .subscribe(() => {
         this.snackBar.open('Buchung bestätigt', 'OK', { duration: 3000 });

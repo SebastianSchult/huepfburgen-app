@@ -1,6 +1,7 @@
 import {
   getBookingDateRangeError,
   getTodayDateString,
+  hasConfirmedBookingConflict,
   hasBookingDateOverlap,
 } from './booking-validation';
 
@@ -48,6 +49,56 @@ describe('booking validation', () => {
           status: 'bestätigt',
         },
       ])
+    ).toBeFalse();
+  });
+
+  it('detects conflicts against confirmed bookings for the same equipment', () => {
+    expect(
+      hasConfirmedBookingConflict(
+        {
+          id: 'booking-2',
+          equipmentId: 'equipment-1',
+          createdBy: 'user-1',
+          startDate: '2026-06-24',
+          endDate: '2026-06-26',
+          status: 'offen',
+        },
+        [
+          {
+            id: 'booking-1',
+            equipmentId: 'equipment-1',
+            createdBy: 'user-2',
+            startDate: '2026-06-26',
+            endDate: '2026-06-28',
+            status: 'bestätigt',
+          },
+        ]
+      )
+    ).toBeTrue();
+  });
+
+  it('ignores cancelled bookings when checking admin confirmation conflicts', () => {
+    expect(
+      hasConfirmedBookingConflict(
+        {
+          id: 'booking-2',
+          equipmentId: 'equipment-1',
+          createdBy: 'user-1',
+          startDate: '2026-06-24',
+          endDate: '2026-06-26',
+          status: 'offen',
+        },
+        [
+          {
+            id: 'booking-1',
+            equipmentId: 'equipment-1',
+            createdBy: 'user-2',
+            startDate: '2026-06-26',
+            endDate: '2026-06-28',
+            status: 'storniert',
+          },
+        ]
+      )
     ).toBeFalse();
   });
 });

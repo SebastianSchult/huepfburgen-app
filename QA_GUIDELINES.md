@@ -63,6 +63,12 @@ Booking dialog checks should cover:
 - end date not before start date,
 - overlaps with non-cancelled existing bookings.
 
+Admin booking confirmation checks should cover:
+
+- open booking exists before status update,
+- same-equipment conflicts against already confirmed bookings,
+- cancelled bookings do not block confirmation.
+
 ## Known Build Warning
 
 `npm run build` and `npm run build:deploy` currently pass but emit an Angular budget warning:
