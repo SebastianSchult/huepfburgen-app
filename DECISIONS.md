@@ -32,3 +32,7 @@ Impact:
 
 - Deployment automation should use the deploy-safe build command.
 - Build verification should check the generated `index.html`.
+
+Status:
+
+- Implemented in `.github/workflows/deploy-all-inkl.yml` on 2026-06-24.

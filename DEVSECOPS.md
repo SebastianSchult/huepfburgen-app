@@ -19,6 +19,8 @@ npm run build:deploy
 npm run verify:base-href
 ```
 
+The deployment workflow must run both commands before syncing files to ALL-INKL.
+
 ## CI Recommendations
 
 Add a separate CI workflow before or alongside deployment:
@@ -46,4 +48,3 @@ Do not echo secret values in workflow logs.
 - Keep deployment scripts simple and auditable.
 - Prefer explicit build verification over assumptions.
 - Record deployment issues in `KNOWN_ISSUES.md`.
-

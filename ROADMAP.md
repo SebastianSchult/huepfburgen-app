@@ -29,7 +29,7 @@ Each item is handled independently. After every completed item:
 
 ### 2. Deployment Reliability
 
-- [ ] 2.1 Update GitHub Actions to use `npm run build:deploy` and `npm run verify:base-href`.
+- [x] 2.1 Update GitHub Actions to use `npm run build:deploy` and `npm run verify:base-href`.
 - [ ] 2.2 Add a separate CI workflow for install, build, and tests.
 - [ ] 2.3 Document the current bundle budget warning.
 
@@ -53,6 +53,7 @@ Each item is handled independently. After every completed item:
 
 - [x] 2026-06-24: Root-level repository governance files added according to the SebsBrain starter pattern.
 - [x] 2026-06-24: Unrelated SaaS architecture docs moved to `docs/legacy-other-projects/react-fastify-postgresql-saas/`.
+- [x] 2026-06-24: Deployment workflow updated to run `npm run build:deploy` and `npm run verify:base-href`.
 - [x] Admin upcoming rentals section exists.
 - [x] Deploy-safe build script exists in `package.json`.
 - [x] README documents the required `/huepfburgen-app/` base href.

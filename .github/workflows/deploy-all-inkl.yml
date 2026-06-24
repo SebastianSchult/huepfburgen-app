@@ -24,7 +24,10 @@ jobs:
         run: npm ci
 
       - name: Build production app
-        run: npm run build -- --configuration production
+        run: npm run build:deploy
+
+      - name: Verify deployment base href
+        run: npm run verify:base-href
 
       - name: Detect build directory
         id: build_dir
