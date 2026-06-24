@@ -35,7 +35,7 @@ Each item is handled independently. After every completed item:
 
 ### 3. Booking Flow Stabilization
 
-- [ ] 3.1 Add stronger booking dialog validation.
+- [x] 3.1 Add stronger booking dialog validation.
 - [ ] 3.2 Add conflict checks when admins confirm bookings.
 - [ ] 3.3 Improve empty states in admin booking views.
 
@@ -56,6 +56,7 @@ Each item is handled independently. After every completed item:
 - [x] 2026-06-24: Deployment workflow updated to run `npm run build:deploy` and `npm run verify:base-href`.
 - [x] 2026-06-24: Separate CI workflow added for install, build, and headless unit tests.
 - [x] 2026-06-24: Current Angular bundle budget warning documented as a performance follow-up.
+- [x] 2026-06-24: Booking dialog validation now rejects past starts, invalid ranges, and overlapping active bookings through tested helpers.
 - [x] Admin upcoming rentals section exists.
 - [x] Deploy-safe build script exists in `package.json`.
 - [x] README documents the required `/huepfburgen-app/` base href.

@@ -56,6 +56,13 @@ High-risk areas:
 - Deployment base href
 - Mobile layout for booking and admin views
 
+Booking dialog checks should cover:
+
+- required equipment and dates,
+- start date not in the past,
+- end date not before start date,
+- overlaps with non-cancelled existing bookings.
+
 ## Known Build Warning
 
 `npm run build` and `npm run build:deploy` currently pass but emit an Angular budget warning:

@@ -12,6 +12,11 @@ import { Booking } from '../../../models/booking';
 import { Equipment } from '../../../models/equipment';
 import { BookingService } from '../../../services/booking.service';
 import { Auth } from '@angular/fire/auth';
+import {
+  getBookingDateRangeError,
+  getTodayDateString,
+  hasBookingDateOverlap,
+} from '../booking-validation';
 
 @Component({
   selector: 'app-booking-dialog',
@@ -33,6 +38,7 @@ export class BookingDialogComponent implements OnInit {
   form: FormGroup;
   equipmentOptions: Equipment[];
   allBookings: Booking[] = [];
+  readonly minStartDate = getTodayDateString();
 
   private bookingService = inject(BookingService);
   private auth = inject(Auth);
@@ -77,9 +83,25 @@ export class BookingDialogComponent implements OnInit {
     });
   }
 
+  get minEndDate(): string {
+    return this.form.get('startDate')?.value || this.minStartDate;
+  }
+
   save() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      return;
+    }
+
+    const dateRangeError = getBookingDateRangeError(
+      this.form.value.startDate,
+      this.form.value.endDate
+    );
+
+    if (dateRangeError) {
+      this.snackBar.open(this.getDateRangeErrorMessage(dateRangeError), 'OK', {
+        duration: 4000,
+      });
       return;
     }
 
@@ -99,14 +121,11 @@ export class BookingDialogComponent implements OnInit {
       .find(eq => eq.id === bookingData.equipmentId)?.bookings
       ?.filter(b => b.status !== 'storniert') ?? [];
 
-    const newStart = new Date(bookingData.startDate);
-    const newEnd = new Date(bookingData.endDate);
-
-    const overlaps = existingBookings.some(b => {
-      const existingStart = new Date(b.start);
-      const existingEnd = new Date(b.end);
-      return newStart <= existingEnd && newEnd >= existingStart;
-    });
+    const overlaps = hasBookingDateOverlap(
+      bookingData.startDate,
+      bookingData.endDate,
+      existingBookings
+    );
 
     if (overlaps) {
       this.snackBar.open('Buchung überschneidet sich mit bestehender!', 'OK', {
@@ -142,5 +161,16 @@ export class BookingDialogComponent implements OnInit {
 
   cancel() {
     this.dialogRef.close(null);
+  }
+
+  private getDateRangeErrorMessage(error: string): string {
+    switch (error) {
+      case 'start-in-past':
+        return 'Das Startdatum darf nicht in der Vergangenheit liegen.';
+      case 'end-before-start':
+        return 'Das Enddatum darf nicht vor dem Startdatum liegen.';
+      default:
+        return 'Bitte gültige Buchungsdaten auswählen.';
+    }
   }
 }
