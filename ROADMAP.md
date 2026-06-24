@@ -47,7 +47,7 @@ Each item is handled independently. After every completed item:
 
 ### 5. Admin Booking UX
 
-- [ ] 5.1 Add or plan admin booking filters for status, date range, and equipment.
+- [x] 5.1 Add or plan admin booking filters for status, date range, and equipment.
 
 ## Completed Work
 
@@ -62,6 +62,7 @@ Each item is handled independently. After every completed item:
 - [x] 2026-06-24: Firestore rules reviewed against current UI flows; MVP risks documented in `docs/firestore-rules-review.md`.
 - [x] 2026-06-24: Availability-vs-booking-data concept documented in `docs/availability-data-concept.md`.
 - [x] 2026-06-24: Unused permissive `adminGuard` function and spec removed; active routes use `AdminGuard` from `auth.guard.ts`.
+- [x] 2026-06-24: Admin booking filters added for status, equipment, and date range.
 - [x] Admin upcoming rentals section exists.
 - [x] Deploy-safe build script exists in `package.json`.
 - [x] README documents the required `/huepfburgen-app/` base href.

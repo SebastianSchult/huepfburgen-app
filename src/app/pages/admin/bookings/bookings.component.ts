@@ -1,6 +1,7 @@
 // src/app/pages/admin/bookings/bookings.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../../services/booking.service';
 import { Booking } from '../../../models/booking';
 import { EquipmentService } from '../../../services/equipment.service';
@@ -10,6 +11,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { hasConfirmedBookingConflict } from '../../../features/booking/booking-validation';
 
 interface BookingRow extends Booking {
@@ -18,15 +22,21 @@ interface BookingRow extends Booking {
   bookedFor?: string;
 }
 
+type BookingStatusFilter = 'all' | 'offen' | 'bestätigt' | 'storniert';
+
 @Component({
   selector: 'app-admin-bookings',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatTableModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
   ],
   templateUrl: './bookings.component.html',
   styleUrls: ['./bookings.component.scss'],
@@ -40,6 +50,13 @@ export class AdminBookingsComponent implements OnInit {
   bookings: BookingRow[] = [];            // offen
   bookingsConfirmed: BookingRow[] = [];   // bestätigt
   bookingsCanceled: BookingRow[] = [];    // storniert
+  equipmentFilterOptions: Array<{ id: string; name: string }> = [];
+  statusFilter: BookingStatusFilter = 'all';
+  equipmentFilter = 'all';
+  dateFromFilter = '';
+  dateToFilter = '';
+
+  private allBookings: BookingRow[] = [];
 
   // Spalten-Konfiguration
   displayedColumns = [
@@ -75,7 +92,11 @@ displayedColumnsNoActions = [
     ]).subscribe({
       next: ([rawBookings, equips, users]) => {
         const userMap = new Map(users.map(u => [u.id, u.email]));
-        const allRows: BookingRow[] = rawBookings.map(b => {
+        this.equipmentFilterOptions = equips
+          .map((equipment) => ({ id: equipment.id, name: equipment.name }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        this.allBookings = rawBookings.map(b => {
           const eq = equips.find(e => e.id === b.equipmentId);
           return {
             ...b,
@@ -84,12 +105,66 @@ displayedColumnsNoActions = [
             bookedFor: (b as any).bookedFor ?? '–'
           };
         });
-        this.bookings          = allRows.filter(b => b.status === 'offen');
-        this.bookingsConfirmed = allRows.filter(b => b.status === 'bestätigt');
-        this.bookingsCanceled  = allRows.filter(b => b.status === 'storniert');
+        this.applyFilters();
       },
       error: err => console.error('Fehler beim Laden der Buchungen:', err)
     });
+  }
+
+  applyFilters() {
+    const filteredRows = this.allBookings.filter((booking) => {
+      const matchesStatus = this.statusFilter === 'all' || booking.status === this.statusFilter;
+      const matchesEquipment = this.equipmentFilter === 'all' || booking.equipmentId === this.equipmentFilter;
+      const matchesDateRange = this.matchesDateRange(booking);
+
+      return matchesStatus && matchesEquipment && matchesDateRange;
+    });
+
+    this.bookings          = filteredRows.filter(b => b.status === 'offen');
+    this.bookingsConfirmed = filteredRows.filter(b => b.status === 'bestätigt');
+    this.bookingsCanceled  = filteredRows.filter(b => b.status === 'storniert');
+  }
+
+  resetFilters() {
+    this.statusFilter = 'all';
+    this.equipmentFilter = 'all';
+    this.dateFromFilter = '';
+    this.dateToFilter = '';
+    this.applyFilters();
+  }
+
+  isStatusSectionVisible(status: Exclude<BookingStatusFilter, 'all'>): boolean {
+    return this.statusFilter === 'all' || this.statusFilter === status;
+  }
+
+  private matchesDateRange(booking: BookingRow): boolean {
+    if (!this.dateFromFilter && !this.dateToFilter) {
+      return true;
+    }
+
+    const bookingStart = this.parseDateOnly(booking.startDate);
+    const bookingEnd = this.parseDateOnly(booking.endDate);
+    const filterStart = this.dateFromFilter ? this.parseDateOnly(this.dateFromFilter) : null;
+    const filterEnd = this.dateToFilter ? this.parseDateOnly(this.dateToFilter) : null;
+
+    if (!bookingStart || !bookingEnd) {
+      return false;
+    }
+
+    if (filterStart && bookingEnd < filterStart) {
+      return false;
+    }
+
+    if (filterEnd && bookingStart > filterEnd) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private parseDateOnly(value: string): Date | null {
+    const parsed = new Date(`${value}T00:00:00`);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
   }
 
   approveBooking(id: string) {

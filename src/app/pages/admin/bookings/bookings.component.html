@@ -1,3 +1,38 @@
+<section class="booking-filters" aria-label="Buchungsfilter">
+  <mat-form-field appearance="fill">
+    <mat-label>Status</mat-label>
+    <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
+      <mat-option value="all">Alle Status</mat-option>
+      <mat-option value="offen">Offen</mat-option>
+      <mat-option value="bestätigt">Bestätigt</mat-option>
+      <mat-option value="storniert">Storniert</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Equipment</mat-label>
+    <mat-select [(ngModel)]="equipmentFilter" (selectionChange)="applyFilters()">
+      <mat-option value="all">Alle Geräte</mat-option>
+      <mat-option *ngFor="let equipment of equipmentFilterOptions" [value]="equipment.id">
+        {{ equipment.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Von</mat-label>
+    <input matInput type="date" [(ngModel)]="dateFromFilter" (ngModelChange)="applyFilters()" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Bis</mat-label>
+    <input matInput type="date" [(ngModel)]="dateToFilter" (ngModelChange)="applyFilters()" />
+  </mat-form-field>
+
+  <button mat-button type="button" (click)="resetFilters()">Zurücksetzen</button>
+</section>
+
+<section *ngIf="isStatusSectionVisible('offen')">
 <h2>Offene Buchungen</h2>
 <p *ngIf="!bookings.length" class="empty-state">Keine offenen Buchungen vorhanden.</p>
 <!-- Desktop-Table für offene -->
@@ -72,7 +107,9 @@
     </div>
   </mat-card>
 </div>
+</section>
 
+<section *ngIf="isStatusSectionVisible('bestätigt')">
 <h2>Bestätigte Buchungen</h2>
 <p *ngIf="!bookingsConfirmed.length" class="empty-state">Keine bestätigten Buchungen vorhanden.</p>
 <!-- Desktop-Table für bestätigte -->
@@ -145,7 +182,9 @@
     </div>
   </mat-card>
 </div>
+</section>
 
+<section *ngIf="isStatusSectionVisible('storniert')">
 <h2>Stornierte Buchungen</h2>
 <p *ngIf="!bookingsCanceled.length" class="empty-state">Keine stornierten Buchungen vorhanden.</p>
 <!-- Desktop-Table für stornierte -->
@@ -208,3 +247,4 @@
     <div class="field"><span class="label">Status:</span><span class="value status-chip" [ngClass]="b.status">{{ b.status }}</span></div>
   </mat-card>
 </div>
+</section>

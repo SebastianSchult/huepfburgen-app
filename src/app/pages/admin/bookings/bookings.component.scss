@@ -13,6 +13,19 @@ h2 {
   letter-spacing: -0.01em;
 }
 
+.booking-filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr)) auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 22px;
+
+  button {
+    min-height: 42px;
+    white-space: nowrap;
+  }
+}
+
 .table-container {
   overflow-x: auto;
   margin-bottom: 18px;
@@ -86,6 +99,10 @@ td.mat-mdc-column-status.storniert {
 }
 
 @media (max-width: 900px) {
+  .booking-filters {
+    grid-template-columns: 1fr;
+  }
+
   .table-container {
     display: none;
   }

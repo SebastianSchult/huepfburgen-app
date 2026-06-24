@@ -76,6 +76,13 @@ Admin booking empty states should be checked for:
 - no cancelled bookings,
 - desktop and mobile layouts.
 
+Admin booking filters should be checked for:
+
+- status filtering,
+- equipment filtering,
+- overlapping date-range filtering,
+- reset behavior.
+
 ## Known Build Warning
 
 `npm run build` and `npm run build:deploy` currently pass but emit an Angular budget warning:
