@@ -20,6 +20,7 @@ npm run verify:base-href
 ```
 
 The deployment workflow must run both commands before syncing files to ALL-INKL.
+`npm run verify:base-href` uses a Node.js script so it works on GitHub-hosted runners without extra CLI tools.
 
 ## CI Recommendations
 

@@ -9,6 +9,7 @@
 | Firestore read scope for bookings may be broader than needed. | Signed-in users may be able to read booking data beyond their own workflow needs. | Review `firestore.rules` before expanding booking features. | Project | Open |
 | Initial bundle exceeds the current Angular budget. | Builds pass, but Angular warns that the initial bundle is 1.04 MB against a 900 kB budget. | Track as a performance task; do not block current stabilization work. | Project | Open |
 | Public read access to `users` supports the current registration placeholder lookup but exposes emails and roles. | User metadata is more visible than ideal. | Replace with a safer registration/invitation flow before broader use. | Project | Open |
+| Deploy base-href verification used `rg`, which is unavailable on GitHub-hosted runners by default. | Deploy workflow failed before syncing files. | Replaced with `scripts/verify-base-href.mjs`. | Project | Resolved |
 
 ## Resolved Issues
 

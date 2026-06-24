@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:deploy": "ng build --configuration production --base-href /huepfburgen-app/",
-    "verify:base-href": "rg -n \"<base href=\\\"/huepfburgen-app/\\\">\" dist/huepfburgen-app/index.html",
+    "verify:base-href": "node scripts/verify-base-href.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
