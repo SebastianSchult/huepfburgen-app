@@ -25,7 +25,7 @@ Each item is handled independently. After every completed item:
 ### 1. Repository Governance
 
 - [x] 1.1 Add root-level agent and project Markdown files.
-- [ ] 1.2 Move unrelated `architecture/docs` content into a clearly marked legacy/other-project folder.
+- [x] 1.2 Move unrelated `architecture/docs` content into a clearly marked legacy/other-project folder.
 
 ### 2. Deployment Reliability
 
@@ -52,6 +52,7 @@ Each item is handled independently. After every completed item:
 ## Completed Work
 
 - [x] 2026-06-24: Root-level repository governance files added according to the SebsBrain starter pattern.
+- [x] 2026-06-24: Unrelated SaaS architecture docs moved to `docs/legacy-other-projects/react-fastify-postgresql-saas/`.
 - [x] Admin upcoming rentals section exists.
 - [x] Deploy-safe build script exists in `package.json`.
 - [x] README documents the required `/huepfburgen-app/` base href.

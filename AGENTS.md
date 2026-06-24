@@ -74,5 +74,4 @@ When project work changes behavior, architecture, deployment, QA, or known risks
 - `DEVSECOPS.md`
 - `KNOWN_ISSUES.md`
 
-The old `architecture/docs/` folder currently contains context from another SaaS project and must not be treated as the source of truth for this app.
-
+Legacy documentation from another SaaS project lives in `docs/legacy-other-projects/react-fastify-postgresql-saas/` and must not be treated as the source of truth for this app.

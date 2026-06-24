@@ -12,7 +12,7 @@ Primary project instructions live in:
 
 This repository is the Angular/Firebase Huepfburgen app.
 
-It is not the React/Fastify/PostgreSQL SaaS project described in the old `architecture/docs/` folder.
+It is not the React/Fastify/PostgreSQL SaaS project described in `docs/legacy-other-projects/react-fastify-postgresql-saas/`.
 
 ## Required Behavior
 
@@ -33,4 +33,3 @@ npm test
 ```
 
 For complete instructions, read `AGENTS.md`.
-

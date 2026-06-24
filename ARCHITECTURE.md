@@ -74,5 +74,4 @@ The GitHub Actions workflow is located at `.github/workflows/deploy-all-inkl.yml
 
 ## Out-of-Scope Context
 
-The existing `architecture/docs/` folder currently contains architecture notes for another React/Fastify/PostgreSQL SaaS project. It is not the source of truth for this Angular/Firebase app.
-
+`docs/legacy-other-projects/react-fastify-postgresql-saas/` contains architecture notes for another React/Fastify/PostgreSQL SaaS project. It is not the source of truth for this Angular/Firebase app.
