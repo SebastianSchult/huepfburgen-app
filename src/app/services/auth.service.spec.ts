@@ -6,7 +6,21 @@ describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: AuthService,
+          useValue: {
+            currentUser$: undefined,
+            isAdmin$: undefined,
+            waitForAuthReady: async () => undefined,
+            isAuthenticated: async () => false,
+            login: async () => undefined,
+            logout: async () => undefined,
+          },
+        },
+      ],
+    });
     service = TestBed.inject(AuthService);
   });
 

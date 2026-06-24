@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MainLayoutComponent } from './main-layout.component';
+import { provideAppTestDependencies } from '../../testing/test-providers';
+import { AuthService } from '../../services/auth.service';
+import { of } from 'rxjs';
 
 describe('MainLayoutComponent', () => {
   let component: MainLayoutComponent;
@@ -8,7 +11,18 @@ describe('MainLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainLayoutComponent]
+      imports: [MainLayoutComponent],
+      providers: [
+        ...provideAppTestDependencies(),
+        {
+          provide: AuthService,
+          useValue: {
+            currentUser$: of(null),
+            isAdmin$: of(false),
+            logout: async () => undefined,
+          },
+        },
+      ],
     })
     .compileComponents();
 

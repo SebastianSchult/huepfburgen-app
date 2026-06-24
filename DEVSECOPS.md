@@ -23,11 +23,11 @@ The deployment workflow must run both commands before syncing files to ALL-INKL.
 
 ## CI Recommendations
 
-Add a separate CI workflow before or alongside deployment:
+The repository has a separate CI workflow at `.github/workflows/ci.yml`:
 
 - `npm ci`
 - `npm run build`
-- relevant tests
+- `npm test -- --watch=false --browsers=ChromeHeadless`
 
 Deployment should only proceed from a known-good `main`.
 

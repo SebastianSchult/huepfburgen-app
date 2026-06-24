@@ -23,6 +23,12 @@ For unit tests:
 npm test
 ```
 
+For CI-style unit tests:
+
+```bash
+npm test -- --watch=false --browsers=ChromeHeadless
+```
+
 ## Manual Smoke Tests
 
 Before deployment-sensitive work is considered done, manually verify:
@@ -55,4 +61,3 @@ High-risk areas:
 Keep test or demo data clearly separated from real customer data.
 
 When using Firestore manually, record any required assumptions in `KNOWN_ISSUES.md` or `docs/`.
-

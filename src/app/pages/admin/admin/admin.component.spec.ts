@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { AdminComponent } from './admin.component';
 import { BookingService } from '../../../services/booking.service';
 import { EquipmentService } from '../../../services/equipment.service';
+import { provideAppTestDependencies } from '../../../testing/test-providers';
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
@@ -12,6 +13,7 @@ describe('AdminComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AdminComponent],
       providers: [
+        ...provideAppTestDependencies(),
         {
           provide: BookingService,
           useValue: {
