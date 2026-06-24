@@ -56,6 +56,16 @@ High-risk areas:
 - Deployment base href
 - Mobile layout for booking and admin views
 
+## Known Build Warning
+
+`npm run build` and `npm run build:deploy` currently pass but emit an Angular budget warning:
+
+- Initial bundle: `1.04 MB`
+- Configured budget: `900 kB`
+- Over budget: about `135 kB`
+
+This is tracked as a performance follow-up and should not block the current stabilization sequence.
+
 ## Test Data
 
 Keep test or demo data clearly separated from real customer data.
